@@ -71,6 +71,13 @@
   padding: 1rem 2rem;
 }
 
+.footer_copyright {
+  border-top: 1px solid var(--icons-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (max-width: 45em) {
   .footer_box {
     width: 90%;
