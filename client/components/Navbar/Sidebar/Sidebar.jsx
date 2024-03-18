@@ -9,10 +9,8 @@ import {
   TiArrowSortedDown,
   TiArrowSortedUp,
 } from 'react-icons/ti';
-import { DiJqueryLogo } from 'react-icons/di';
 
 import Style from './Sidebar.module.css';
-import images from '../../../img';
 import Button from '../../Button/Button';
 
 const Sidebar = ({ setOpenSidemenu }) => {
