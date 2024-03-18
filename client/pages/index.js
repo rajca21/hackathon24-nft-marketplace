@@ -3,6 +3,7 @@ import React from 'react';
 import Style from '../styles/index.module.css';
 import {
   BigNFTSlider,
+  Category,
   Hero,
   Service,
   Subscribe,
@@ -14,6 +15,7 @@ const Home = () => {
       <Hero />
       <Service />
       <BigNFTSlider />
+      <Category />
       <Subscribe />
     </div>
   );
