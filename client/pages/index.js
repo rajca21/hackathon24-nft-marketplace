@@ -4,6 +4,7 @@ import Style from '../styles/index.module.css';
 import {
   BigNFTSlider,
   Category,
+  Filter,
   Hero,
   Service,
   Subscribe,
@@ -15,6 +16,7 @@ const Home = () => {
       <Hero />
       <Service />
       <BigNFTSlider />
+      <Filter />
       <Category />
       <Subscribe />
     </div>
