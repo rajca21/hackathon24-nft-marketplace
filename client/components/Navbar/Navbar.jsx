@@ -25,7 +25,7 @@ const Navbar = () => {
       setHelp(false);
       setNotification(false);
       setProfile(false);
-    } else if (btnText == 'Help Center') {
+    } else if (btnText == 'Help') {
       setDiscover(false);
       setHelp(true);
       setNotification(false);
@@ -53,17 +53,18 @@ const Navbar = () => {
       <div className={Style.navbar_container}>
         {/* Left navbar section START */}
         <div className={Style.navbar_container_left}>
-          <div className={Style.logo}>
+          <div className={Style.logo_container}>
             <Image
               src={images.logo}
               alt='GlamChain Logo'
-              width={100}
-              height={100}
+              width={40}
+              height={40}
             />
+            <p className={Style.logo_title}>GlamChain</p>
           </div>
           <div className={Style.navbar_container_left_box_input}>
             <div className={Style.navbar_container_left_box_input_box}>
-              <input type='text' placeholder='Search NFTs...' />
+              <input type='text' />
               <BsSearch onClick={() => {}} className={Style.search_icon} />
             </div>
           </div>
@@ -85,7 +86,7 @@ const Navbar = () => {
 
           {/* Help Center section START */}
           <div className={Style.navbar_container_right_help}>
-            <p onClick={(e) => openMenu(e)}>Help Center</p>
+            <p onClick={(e) => openMenu(e)}>Help</p>
             {help && (
               <div className={Style.navbar_container_right_help_box}>
                 <HelpCenter />
@@ -105,9 +106,9 @@ const Navbar = () => {
           {/* Notifications section END */}
 
           {/* Create button section START */}
-          <div className={Style.navbar_container_right_button}>
-            <Button btnText='Create' />
-          </div>
+          {/* <div className={Style.navbar_container_right_button}>
+            <Button btnName='Create' handleClick={() => {}} />
+          </div> */}
           {/* Create button section END */}
 
           {/* User profile section START */}

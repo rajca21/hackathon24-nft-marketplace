@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { GrClose } from 'react-icons/gr';
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -11,6 +9,7 @@ import {
   TiArrowSortedDown,
   TiArrowSortedUp,
 } from 'react-icons/ti';
+import { DiJqueryLogo } from 'react-icons/di';
 
 import Style from './Sidebar.module.css';
 import images from '../../../img';
@@ -73,10 +72,6 @@ const Sidebar = ({ setOpenSidemenu }) => {
     },
   ];
 
-  const closeSidebar = () => {
-    setOpenSidemenu(false);
-  };
-
   const openDiscoverMenu = () => {
     setOpenDiscover(!openDiscover);
   };
@@ -87,10 +82,7 @@ const Sidebar = ({ setOpenSidemenu }) => {
 
   return (
     <div className={Style.sideBar}>
-      <GrClose className={Style.sideBar_closeBtn} onClick={closeSidebar} />
-
       <div className={Style.sideBar_box}>
-        <Image src={images.logo} alt='logo' width={150} height={150} />
         <p>Discover the most outstanding fashion NFTs</p>
         <div className={Style.sideBar_social}>
           <a href='#'>
@@ -148,8 +140,8 @@ const Sidebar = ({ setOpenSidemenu }) => {
       </div>
 
       <div className={Style.sideBar_button}>
-        <Button btnName='Create' />
-        <Button btnName='Connect Wallet' />
+        <Button btnName='Create' handleClick={() => {}} />
+        <Button btnName='Connect Wallet' handleClick={() => {}} />
       </div>
     </div>
   );

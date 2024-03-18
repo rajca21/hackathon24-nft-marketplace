@@ -36,7 +36,7 @@ const Discover = () => {
   ];
 
   return (
-    <div className={Style.box}>
+    <div>
       {discover.map((el, index) => (
         <div key={index + 1} className={Style.discover}>
           <Link href={{ pathname: `${el.link}` }}>{el.name}</Link>
