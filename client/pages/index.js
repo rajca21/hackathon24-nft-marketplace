@@ -1,7 +1,12 @@
 import React from 'react';
 
 import Style from '../styles/index.module.css';
-import { BigNFTSlider, Hero, Service } from '../components/components_index';
+import {
+  BigNFTSlider,
+  Hero,
+  Service,
+  Subscribe,
+} from '../components/components_index';
 
 const Home = () => {
   return (
@@ -9,6 +14,7 @@ const Home = () => {
       <Hero />
       <Service />
       <BigNFTSlider />
+      <Subscribe />
     </div>
   );
 };
