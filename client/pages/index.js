@@ -4,8 +4,10 @@ import Style from '../styles/index.module.css';
 import {
   BigNFTSlider,
   Category,
+  Collection,
   Filter,
   Hero,
+  NFTCards,
   Service,
   Subscribe,
 } from '../components/components_index';
@@ -16,7 +18,9 @@ const Home = () => {
       <Hero />
       <Service />
       <BigNFTSlider />
+      <Collection />
       <Filter />
+      <NFTCards />
       <Category />
       <Subscribe />
     </div>
