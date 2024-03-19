@@ -3,12 +3,14 @@ import React from 'react';
 import Style from '../styles/index.module.css';
 import {
   BigNFTSlider,
+  Brand,
   Category,
   Collection,
   Filter,
   Hero,
   NFTCards,
   Service,
+  Slider,
   Subscribe,
 } from '../components/components_index';
 
@@ -18,11 +20,13 @@ const Home = () => {
       <Hero />
       <Service />
       <BigNFTSlider />
+      <Slider />
       <Collection />
       <Filter />
       <NFTCards />
       <Category />
       <Subscribe />
+      <Brand />
     </div>
   );
 };
