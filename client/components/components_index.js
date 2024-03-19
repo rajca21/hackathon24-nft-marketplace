@@ -6,6 +6,7 @@ import Collection from './Collection/Collection';
 import Filter from './Filter/Filter';
 import Hero from './Hero/Hero';
 import Footer from './Footer/Footer';
+import LikeProfile from './LikeProfile/LikeProfile';
 import Navbar from './Navbar/Navbar';
 import NFTCards from './NFTCards/NFTCards';
 import Service from './Service/Service';
@@ -22,6 +23,7 @@ export {
   Filter,
   Hero,
   Footer,
+  LikeProfile,
   Navbar,
   NFTCards,
   Service,
