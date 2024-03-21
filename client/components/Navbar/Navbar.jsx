@@ -18,20 +18,20 @@ const Navbar = () => {
   const [openSidemenu, setOpenSidemenu] = useState(false);
 
   // functions for opening menus (sub-components)
-  const openMenu = (e) => {
-    const btnText = e.target.innerText;
-    if (btnText == 'Discover') {
-      setDiscover(true);
-      setHelp(false);
-      setNotification(false);
-      setProfile(false);
-    } else if (btnText == 'Help') {
-      setDiscover(false);
-      setHelp(true);
-      setNotification(false);
-      setProfile(false);
-    }
+  const toggleDiscover = () => {
+    setDiscover(!discover);
+    setHelp(false);
+    setNotification(false);
+    setProfile(false);
   };
+
+  const toggleHelp = () => {
+    setHelp(!help);
+    setDiscover(false);
+    setNotification(false);
+    setProfile(false);
+  };
+
   const openNotification = () => {
     setNotification(!notification);
     setDiscover(false);
@@ -53,15 +53,17 @@ const Navbar = () => {
       <div className={Style.navbar_container}>
         {/* Left navbar section START */}
         <div className={Style.navbar_container_left}>
-          <div className={Style.logo_container}>
-            <Image
-              src={images.logo}
-              alt='GlamChain Logo'
-              width={40}
-              height={40}
-            />
-            <p className={Style.logo_title}>GlamChain</p>
-          </div>
+          <Link href='/'>
+            <div className={Style.logo_container}>
+              <Image
+                src={images.logo}
+                alt='GlamChain Logo'
+                width={40}
+                height={40}
+              />
+              <p className={Style.logo_title}>GlamChain</p>
+            </div>
+          </Link>
           <div className={Style.navbar_container_left_box_input}>
             <div className={Style.navbar_container_left_box_input_box}>
               <input type='text' />
@@ -75,7 +77,7 @@ const Navbar = () => {
         <div className={Style.navbar_container_right}>
           {/* Discover section START */}
           <div className={Style.navbar_container_right_discover}>
-            <p onClick={(e) => openMenu(e)}>Discover</p>
+            <p onClick={toggleDiscover}>Discover</p>
             {discover && (
               <div className={Style.navbar_container_right_discover_box}>
                 <Discover />
@@ -86,7 +88,7 @@ const Navbar = () => {
 
           {/* Help Center section START */}
           <div className={Style.navbar_container_right_help}>
-            <p onClick={(e) => openMenu(e)}>Help</p>
+            <p onClick={toggleHelp}>Help</p>
             {help && (
               <div className={Style.navbar_container_right_help_box}>
                 <HelpCenter />
