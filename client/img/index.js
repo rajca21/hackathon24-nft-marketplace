@@ -20,6 +20,10 @@ import user7 from './user-7.png';
 import user8 from './user-8.png';
 import user9 from './user-9.png';
 import user10 from './user-10.png';
+import provider1 from './provider-1.png';
+import provider2 from './provider-2.png';
+import provider3 from './provider-3.png';
+import provider4 from './provider-4.png';
 import service1 from './service-1.png';
 import service2 from './service-2.png';
 import service3 from './service-3.png';
@@ -34,6 +38,7 @@ import vimeo from './vimeo.svg';
 import vector from './VectorHIW.svg';
 import zgcmq from './zgcmq.svg';
 import hero from './hero.png';
+import hero2 from './hero2.png';
 import nft_1 from './nft_1.png';
 import getAble from './getable.png';
 import nft_image_1 from './nft-image-1.png';
@@ -54,6 +59,7 @@ export default {
   getAble,
   nft_1,
   hero,
+  hero2,
   creatorbackground1,
   creatorbackground2,
   creatorbackground3,
@@ -75,6 +81,10 @@ export default {
   user8,
   user9,
   user10,
+  provider1,
+  provider2,
+  provider3,
+  provider4,
   service1,
   service2,
   service3,

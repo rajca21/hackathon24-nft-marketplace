@@ -6,8 +6,8 @@ import Style from './HelpCenter.module.css';
 const HelpCenter = () => {
   const helpCenter = [
     {
-      name: 'About',
-      link: 'about',
+      name: 'About Us',
+      link: 'about-us',
     },
     {
       name: 'Contact Us',
@@ -20,10 +20,6 @@ const HelpCenter = () => {
     {
       name: 'Sign In',
       link: 'sign-in',
-    },
-    {
-      name: 'Subscription',
-      link: 'subscription',
     },
   ];
 
