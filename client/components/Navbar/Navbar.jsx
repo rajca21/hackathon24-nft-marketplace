@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { MdNotifications } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
-import { CgMenuLeft, CgMenuRight } from 'react-icons/cg';
+import { CgMenuRight } from 'react-icons/cg';
 
 import Style from './Navbar.module.css';
 import images from '../../img';
+import { NFTMarketplaceContext } from '../../context/NFTMarketplaceContext';
 import { Discover, HelpCenter, Notification, Profile, Sidebar } from './index';
 import { Button } from '../components_index';
 
@@ -16,6 +18,9 @@ const Navbar = () => {
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
   const [openSidemenu, setOpenSidemenu] = useState(false);
+
+  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
+  const router = useRouter();
 
   // functions for opening menus (sub-components)
   const toggleDiscover = () => {
@@ -108,9 +113,16 @@ const Navbar = () => {
           {/* Notifications section END */}
 
           {/* Create button section START */}
-          {/* <div className={Style.navbar_container_right_button}>
-            <Button btnName='Create' handleClick={() => {}} />
-          </div> */}
+          <div className={Style.navbar_container_right_button}>
+            {currentAccount == '' ? (
+              <Button btnName='Connect' handleClick={() => connectWallet()} />
+            ) : (
+              <Button
+                btnName='Create'
+                handleClick={() => router.push('/uploadnft')}
+              />
+            )}
+          </div>
           {/* Create button section END */}
 
           {/* User profile section START */}
