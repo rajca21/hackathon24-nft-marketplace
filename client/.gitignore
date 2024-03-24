@@ -1,3 +1,4 @@
+# Next
 /node_modules
 /.pnp
 .pnp.js
@@ -15,3 +16,12 @@ yarn-error.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+# Hardhat
+node_modules
+.env
+/cache
+/artifacts
+/typechain
+/typechain-types
+/coverage
+/coverage.json
