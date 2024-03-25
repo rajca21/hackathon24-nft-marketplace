@@ -1,0 +1,9 @@
+.emptySearch_box {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.emptySearch_box_text {
+  font-size: 3rem;
+  line-height: 0;
+}

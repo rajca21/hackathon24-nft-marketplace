@@ -182,11 +182,11 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Function for retrieving all NFTs inside of market place
   const fetchNFTs = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider();
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
       const contract = fetchContract(provider);
-
-      const data = await contract.fetchMarketItem();
-      console.log(data);
+      const data = await contract.fetchMarketItems();
 
       const items = await Promise.all(
         data.map(
@@ -286,6 +286,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Functions we call on init
   useEffect(() => {
     checkIfWalletConnected();
+    fetchNFTs();
   }, []);
 
   return (
