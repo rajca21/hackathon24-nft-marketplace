@@ -154,7 +154,11 @@ const Navbar = () => {
       {/* Sidebar START */}
       {openSidemenu && (
         <div className={Style.Sidebar}>
-          <Sidebar setOpenSidemenu={setOpenSidemenu} />
+          <Sidebar
+            setOpenSidemenu={setOpenSidemenu}
+            currentAccount={currentAccount}
+            connectWallet={connectWallet}
+          />
         </div>
       )}
       {/* Sidebar END */}

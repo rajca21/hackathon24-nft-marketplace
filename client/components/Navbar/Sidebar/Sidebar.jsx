@@ -7,13 +7,12 @@ import {
   TiSocialYoutube,
   TiSocialInstagram,
   TiArrowSortedDown,
-  TiArrowSortedUp,
 } from 'react-icons/ti';
 
 import Style from './Sidebar.module.css';
 import Button from '../../Button/Button';
 
-const Sidebar = ({ setOpenSidemenu }) => {
+const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
   const [openDiscover, setOpenDiscover] = useState(false);
   const [openHelp, setOpenHelp] = useState(false);
 
@@ -138,8 +137,17 @@ const Sidebar = ({ setOpenSidemenu }) => {
       </div>
 
       <div className={Style.sideBar_button}>
-        <Button btnName='Create' handleClick={() => {}} />
-        <Button btnName='Connect Wallet' handleClick={() => {}} />
+        {currentAccount == '' ? (
+          <Button
+            btnName='Connect Wallet'
+            handleClick={() => connectWallet()}
+          />
+        ) : (
+          <Button
+            btnName='Create'
+            handleClick={() => router.push('/uploadnft')}
+          />
+        )}
       </div>
     </div>
   );

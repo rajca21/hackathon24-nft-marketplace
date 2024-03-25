@@ -15,13 +15,16 @@ const DropZone = ({
   royalties,
   fileSize,
   category,
-  image,
   properties,
+  setImage,
+  uploadToPinata,
 }) => {
   const [fileUrl, setFileUrl] = useState(null);
 
   const onDrop = useCallback(async (acceptedFile) => {
-    setFileUrl(acceptedFile[0]);
+    const url = await uploadToPinata(acceptedFile[0]);
+    setFileUrl(url);
+    setImage(url);
   });
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -54,7 +57,13 @@ const DropZone = ({
       {fileUrl && (
         <aside className={Style.DropZone_box_aside}>
           <div className={Style.DropZone_box_aside_box}>
-            <Image src={fileUrl} alt='nft' width={200} height={200} />
+            <Image
+              src={fileUrl}
+              alt='nft'
+              width={300}
+              height={300}
+              layout='responsive'
+            />
 
             <div className={Style.DropZone_box_aside_box_preview}>
               {(name || website) && (

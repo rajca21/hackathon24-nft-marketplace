@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Router from 'next/router';
+import React, { useState, useEffect } from 'react';
 import Web3Modal from 'web3modal';
 import { ethers } from 'ethers';
+import { useRouter } from 'next/router';
 import axios from 'axios';
-import { create as ipfsHttpClient } from 'ipfs-http-client';
 
 import { NFTMarketplaceABI, NFTMarketplaceAddress } from './constants';
-
-const client = ipfsHttpClient({
-  host: 'infura-ipfs.io',
-  port: 5001,
-  protocol: 'https',
-  headers: {},
-});
 
 const fetchContract = (signerOrProvider) =>
   new ethers.Contract(
@@ -23,8 +15,8 @@ const fetchContract = (signerOrProvider) =>
 
 const connectingWithSmartContract = async () => {
   try {
-    const web3modal = new Web3Modal();
-    const connection = await web3modal.connect();
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
     const contract = fetchContract(signer);
@@ -39,7 +31,11 @@ const connectingWithSmartContract = async () => {
 export const NFTMarketplaceContext = React.createContext();
 
 export const NFTMarketplaceProvider = ({ children }) => {
+  const [error, setError] = useState('');
+  const [openError, setOpenError] = useState(false);
   const [currentAccount, setCurrentAccount] = useState('');
+  const [accountBalance, setAccountBalance] = useState('');
+  const router = useRouter();
 
   // Function for testing connection to Smart Contract
   const checkContract = async () => {
@@ -50,7 +46,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Function for checking wallet connectivity
   const checkIfWalletConnected = async () => {
     try {
-      if (!window.ethereum) return console.error('Install MetaMask!');
+      if (!window.ethereum)
+        return setOpenError(true), setError('Install MetaMask');
 
       const accounts = await window.ethereum.request({
         method: 'eth_accounts',
@@ -58,9 +55,17 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
+        // console.log(accounts[0]);
       } else {
-        console.error('No Account Found!');
+        // setError("No Account Found");
+        // setOpenError(true);
+        console.log('No account');
       }
+
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const getBalance = await provider.getBalance(accounts[0]);
+      const bal = ethers.utils.formatEther(getBalance);
+      setAccountBalance(bal);
     } catch (error) {
       console.error(
         'Something went wrong while connecting to wallet: ' + error
@@ -71,13 +76,18 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Function for connecting the wallet
   const connectWallet = async () => {
     try {
-      if (!window.ethereum) return console.error('Install MetaMask!');
+      if (!window.ethereum)
+        return setOpenError(true), setError('Install MetaMask');
 
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
 
+      console.log(accounts);
       setCurrentAccount(accounts[0]);
+
+      // window.location.reload();
+      connectingWithSmartContract();
     } catch (error) {
       console.error(
         'Something went wrong while connecting the wallet: ' + error
@@ -86,40 +96,70 @@ export const NFTMarketplaceProvider = ({ children }) => {
   };
 
   // Function for uploading images to IPFS
-  const uploadToIPFS = async (file) => {
-    try {
-      const added = await client.add({
-        content: file,
-      });
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      return url;
-    } catch (error) {
-      console.error('Something went wrong while uploading to IPFS: ' + error);
+  const uploadToPinata = async (file) => {
+    if (file) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await axios({
+          method: 'post',
+          url: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
+          data: formData,
+          headers: {
+            'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmMmRlMTA3ZC00NmI3LTRhZGYtYjQ5MC1kNjg1Mzg5ZmU5Y2UiLCJlbWFpbCI6ImdsYW1jaGFpbjI0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiNTMzMmMxNDIxZWFlMjYzNDUyMiIsInNjb3BlZEtleVNlY3JldCI6IjJmYjRhNWNiMmNhZDEwMWFmZDc5MjhiYTc4MDhhZWM1ODRiN2E5YjNkMWYxZGE3ZDI1YTNlOWIxZDU2ZTVhYjciLCJpYXQiOjE3MTEzMTg5MjF9.IOpJEM79kYQopxe7XvsMr9PIrTozXKdSYXgAwbfNrug',
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        const imgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+        return imgHash;
+      } catch (error) {
+        console.error(
+          'Something went wrong while uploading to Pinata: ' + error
+        );
+      }
     }
   };
 
   // Function for creating NFTs
-  const createNFT = async (formInput, fileURL, router) => {
+  const createNFT = async (name, price, image, description, router) => {
     try {
-      const { name, description, price } = formInput;
-      if (!name || !description || !price || !fileURL)
+      if (!name || !description || !price || !image)
         return console.error('Data is missing! ' + error);
 
-      const data = JSON.stringify({ name, description, image: fileURL });
+      const data = JSON.stringify({ name, description, image });
 
-      const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const response = await axios({
+        method: 'POST',
+        url: 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
+        data: data,
+        headers: {
+          'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmMmRlMTA3ZC00NmI3LTRhZGYtYjQ5MC1kNjg1Mzg5ZmU5Y2UiLCJlbWFpbCI6ImdsYW1jaGFpbjI0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiNTMzMmMxNDIxZWFlMjYzNDUyMiIsInNjb3BlZEtleVNlY3JldCI6IjJmYjRhNWNiMmNhZDEwMWFmZDc5MjhiYTc4MDhhZWM1ODRiN2E5YjNkMWYxZGE3ZDI1YTNlOWIxZDU2ZTVhYjciLCJpYXQiOjE3MTEzMTg5MjF9.IOpJEM79kYQopxe7XvsMr9PIrTozXKdSYXgAwbfNrug',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
+
       await createSale(url, price);
+      router.push('/search');
     } catch (error) {
       console.error('Something went wrong while creating NFT: ' + error);
+      setOpenError(true);
     }
   };
 
   // Function for creating NFT sale
   const createSale = async (url, formInputPrice, isReselling, id) => {
     try {
+      console.log(url, formInputPrice, isReselling, id);
       const price = ethers.utils.parseUnits(formInputPrice, 'ether');
+
       const contract = await connectingWithSmartContract();
+
       const listingPrice = await contract.getListingPrice();
 
       const transaction = !isReselling
@@ -134,6 +174,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
       console.log(transaction);
     } catch (error) {
       console.error('Something went wrong while creating NFT sale: ' + error);
+      setError('error while creating sale');
+      setOpenError(true);
     }
   };
 
@@ -253,7 +295,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
         checkContract,
         checkIfWalletConnected,
         connectWallet,
-        uploadToIPFS,
+        uploadToPinata,
         createNFT,
         fetchNFTs,
         fetchMyNFTsOrListedNFTs,
