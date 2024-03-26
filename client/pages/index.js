@@ -7,6 +7,7 @@ import {
   Category,
   Collection,
   Filter,
+  FollowerTab,
   Hero,
   Loader,
   NFTCards,
@@ -15,22 +16,29 @@ import {
   Subscribe,
 } from '../components/components_index';
 import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
+import { getTopCreators } from '../utils/TopCreators';
 
 const Home = () => {
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
+  const [creators, setCreators] = useState([]);
 
   const { fetchNFTs, checkIfWalletConnected } = useContext(
     NFTMarketplaceContext
   );
 
   useEffect(() => {
-    checkIfWalletConnected();
+    const fetch = async () => {
+      const res = await fetchNFTs();
+      setNfts(res?.reverse());
+      setNftsCopy(res);
+    };
 
-    fetchNFTs().then((item) => {
-      setNfts(item?.reverse());
-      setNftsCopy(item);
-    });
+    checkIfWalletConnected();
+    fetch();
+
+    const creatorsCopy = getTopCreators(nftsCopy);
+    setCreators(creatorsCopy);
   }, []);
 
   return (
@@ -47,6 +55,11 @@ const Home = () => {
         <NFTCards NFTData={nfts} />
       )}
       <Category />
+      {creators.length === 0 ? (
+        <Loader message='Fetching top Creators, this might take a few moments, please wait!' />
+      ) : (
+        <FollowerTab TopCreator={creators} />
+      )}
       <Subscribe />
       <Brand />
     </div>
