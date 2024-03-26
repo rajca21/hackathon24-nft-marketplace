@@ -1,23 +1,31 @@
 import '../styles/globals.css';
 import { NFTMarketplaceProvider } from '../context/NFTMarketplaceContext';
 import { Navbar, Footer } from '../components/components_index';
-import React, { useState } from 'react';
-import images from '../img';
+import { CgDarkMode } from "react-icons/cg";
+import React, { useState, useEffect } from 'react';
 
-const MyApp = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState('light');
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(newTheme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(newTheme);
+    }
   };
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.add('light');
+    }
+  }, []);
 
   return (
     <div>
       <NFTMarketplaceProvider>
-        <button onClick={toggleTheme} className='themeButton'></button>
+        <CgDarkMode onClick={toggleTheme} className='themeButton'></CgDarkMode>
         <Navbar />
         <Component {...pageProps} />
         <Footer />
@@ -26,4 +34,4 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default App;
