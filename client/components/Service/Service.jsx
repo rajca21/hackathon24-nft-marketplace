@@ -78,8 +78,7 @@ const Service = () => {
           <p>
             Begin trading NFTs in the fashion NFT shop by placing bids, making
             offers, or purchasing directly. Engage with other collectors and
-            artists in the marketplace, and build your NFT fashion collection
-            with pieces that speak to your sense of style and creativity.
+            artists in the marketplace, and build your NFT fashion collection.
           </p>
         </div>
         {/* 4th item END */}
