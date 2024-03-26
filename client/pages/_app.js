@@ -1,8 +1,8 @@
 import '../styles/globals.css';
-import { CgDarkMode } from "react-icons/cg";
 import { NFTMarketplaceProvider } from '../context/NFTMarketplaceContext';
 import { Navbar, Footer } from '../components/components_index';
 import React, { useState } from 'react';
+import images from '../img';
 
 const MyApp = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState('light');
@@ -17,7 +17,7 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <div>
       <NFTMarketplaceProvider>
-        <CgDarkMode onClick={toggleTheme} className='themeButton'>Toggle Theme</CgDarkMode>
+        <button onClick={toggleTheme} className='themeButton'></button>
         <Navbar />
         <Component {...pageProps} />
         <Footer />

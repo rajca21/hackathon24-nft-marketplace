@@ -51,7 +51,8 @@ import founder_aj from './founder-aj.png';
 import founder_ez from './founder-ez.png';
 import founder_mj from './founder-mj.png';
 import founder_nr from './founder-nr.jpeg';
-import loader from './loader.gif';
+import loader from './loader.gif'; 
+import mode from './mode.png'; 
 
 export default {
   collection,
@@ -108,4 +109,5 @@ export default {
   founder_mj,
   founder_nr,
   loader,
+  mode
 };
