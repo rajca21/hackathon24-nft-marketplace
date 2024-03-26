@@ -229,7 +229,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
       const data =
         type === 'fetchItemsListed'
           ? await contract.fetchItemsListed()
-          : await contract.fetchMyNFT();
+          : await contract.fetchMyNFTs();
 
       const items = await Promise.all(
         data.map(
@@ -278,6 +278,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
       });
 
       await transaction.wait();
+      router.push('/author');
     } catch (error) {
       console.error('Something went wrong while buying NFT: ' + error);
     }

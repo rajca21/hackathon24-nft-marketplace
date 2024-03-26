@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import Style from '../styles/author.module.css';
 import images from '../img';
@@ -10,6 +10,7 @@ import {
   AuthorProfileCard,
   AuthorTabs,
 } from '../pageComponents/author/authorindex';
+import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
 
 const author = () => {
   const [collectables, setCollectables] = useState(true);
@@ -17,33 +18,12 @@ const author = () => {
   const [like, setLike] = useState(false);
   const [follower, setFollower] = useState(false);
   const [following, setFollowing] = useState(false);
+  const [nfts, setNfts] = useState([]);
+  const [myNFTs, setMyNFTs] = useState([]);
 
-  const collectionArray = [
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-    {
-      image: images.nft_image_3,
-    },
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-    {
-      image: images.nft_image_3,
-    },
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-  ];
+  const { fetchMyNFTsOrListedNFTs, currentAccount } = useContext(
+    NFTMarketplaceContext
+  );
 
   const followerArray = [
     {
@@ -78,16 +58,29 @@ const author = () => {
     },
   ];
 
+  useEffect(() => {
+    fetchMyNFTsOrListedNFTs('fetchItemsListed').then((items) => {
+      setNfts(items);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
+      setMyNFTs(items);
+    });
+  }, []);
+
   return (
     <div className={Style.author}>
       <Banner bannerImage={images.creatorbackground2} />
-      <AuthorProfileCard />
+      <AuthorProfileCard currentAccount={currentAccount} />
       <AuthorTabs
         setCollectables={setCollectables}
         setCreated={setCreated}
         setLike={setLike}
         setFollower={setFollower}
         setFollowing={setFollowing}
+        currentAccount={currentAccount}
       />
       <AuthorNFTCardBox
         collectables={collectables}
@@ -95,8 +88,8 @@ const author = () => {
         like={like}
         follower={follower}
         following={following}
-        nfts={collectionArray}
-        myNFTS={collectionArray}
+        nfts={nfts}
+        myNFTS={myNFTs}
       />
       <Title
         heading='Popular Creators'
