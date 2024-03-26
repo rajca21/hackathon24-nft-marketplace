@@ -8,6 +8,7 @@ import FollowerTab from './FollowerTab/FollowerTab';
 import Hero from './Hero/Hero';
 import Footer from './Footer/Footer';
 import LikeProfile from './LikeProfile/LikeProfile';
+import Loader from './Loader/Loader';
 import Navbar from './Navbar/Navbar';
 import NFTCards from './NFTCards/NFTCards';
 import Service from './Service/Service';
@@ -26,6 +27,7 @@ export {
   Hero,
   Footer,
   LikeProfile,
+  Loader,
   Navbar,
   NFTCards,
   Service,

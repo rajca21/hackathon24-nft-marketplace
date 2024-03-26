@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import Style from '../styles/search.module.css';
 import images from '../img';
-import { Brand, Filter, Slider } from '../components/components_index';
+import { Brand, Filter, Loader, Slider } from '../components/components_index';
 import {
   Banner,
   NFTCardTwo,
@@ -60,7 +60,11 @@ const search = () => {
           </h2>
         </div>
       )}
-      <NFTCardTwo NFTData={nfts} />
+      {nfts?.length === 0 ? (
+        <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
+      ) : (
+        <NFTCardTwo NFTData={nfts} />
+      )}
       <Slider />
       <Brand />
     </div>

@@ -8,6 +8,7 @@ import {
   Collection,
   Filter,
   Hero,
+  Loader,
   NFTCards,
   Service,
   Slider,
@@ -40,7 +41,11 @@ const Home = () => {
       <Slider />
       <Collection />
       <Filter />
-      <NFTCards NFTData={nfts} />
+      {nfts?.length === 0 ? (
+        <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
+      ) : (
+        <NFTCards NFTData={nfts} />
+      )}
       <Category />
       <Subscribe />
       <Brand />
