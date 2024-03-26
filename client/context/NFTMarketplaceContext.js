@@ -47,7 +47,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   const checkIfWalletConnected = async () => {
     try {
       if (!window.ethereum)
-        return setOpenError(true), setError('Install MetaMask');
+        return setOpenError(true), setError('Install MetaMask!');
 
       const accounts = await window.ethereum.request({
         method: 'eth_accounts',
@@ -55,11 +55,12 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        // console.log(accounts[0]);
       } else {
-        // setError("No Account Found");
-        // setOpenError(true);
-        console.log('No account');
+        setError('No Account Found!');
+        setOpenError(true);
+        console.error(
+          'Something wen wrong while checkIfWalletConnected: ' + error
+        );
       }
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -67,6 +68,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
       const bal = ethers.utils.formatEther(getBalance);
       setAccountBalance(bal);
     } catch (error) {
+      setError('Something went wrong while connecting to Wallet!');
+      setOpenError(true);
       console.error(
         'Something went wrong while connecting to wallet: ' + error
       );
@@ -86,9 +89,10 @@ export const NFTMarketplaceProvider = ({ children }) => {
       console.log(accounts);
       setCurrentAccount(accounts[0]);
 
-      // window.location.reload();
       connectingWithSmartContract();
     } catch (error) {
+      setError('Something went wrong while connecting to Wallet!');
+      setOpenError(true);
       console.error(
         'Something went wrong while connecting the wallet: ' + error
       );
@@ -116,6 +120,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
         const imgHash = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
         return imgHash;
       } catch (error) {
+        setError('Something went wrong while uploading to Wallet!');
+        setOpenError(true);
         console.error(
           'Something went wrong while uploading to Pinata: ' + error
         );
@@ -127,7 +133,10 @@ export const NFTMarketplaceProvider = ({ children }) => {
   const createNFT = async (name, price, image, description, router) => {
     try {
       if (!name || !description || !price || !image)
-        return console.error('Data is missing! ' + error);
+        return (
+          setOpenError(true),
+          setError('Required data for creating NFT is missing!')
+        );
 
       const data = JSON.stringify({ name, description, image });
 
@@ -147,8 +156,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
       await createSale(url, price);
       router.push('/search');
     } catch (error) {
-      console.error('Something went wrong while creating NFT: ' + error);
+      setError('Something went wrong while creating NFT!');
       setOpenError(true);
+      console.error('Something went wrong while creating NFT: ' + error);
     }
   };
 
@@ -173,9 +183,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
       await transaction.wait();
       console.log(transaction);
     } catch (error) {
-      console.error('Something went wrong while creating NFT sale: ' + error);
-      setError('error while creating sale');
+      setError('Something went wrong while creating NFT sale!');
       setOpenError(true);
+      console.error('Something went wrong while creating NFT sale: ' + error);
     }
   };
 
@@ -218,6 +228,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       return items;
     } catch (error) {
+      setError('Something went wrong while fetching NFTs!');
+      setOpenError(true);
       console.error('Something went wrong while fetching NFTs: ' + error);
     }
   };
@@ -261,6 +273,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       return items;
     } catch (error) {
+      setError('Something went wrong while fetching listed NFTs!');
+      setOpenError(true);
       console.error(
         'Something went wrong while fetching listed NFTs: ' + error
       );
@@ -280,6 +294,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
       await transaction.wait();
       router.push('/author');
     } catch (error) {
+      setError('Something went wrong while buying NFT!');
+      setOpenError(true);
       console.error('Something went wrong while buying NFT: ' + error);
     }
   };
@@ -294,6 +310,9 @@ export const NFTMarketplaceProvider = ({ children }) => {
     <NFTMarketplaceContext.Provider
       value={{
         currentAccount,
+        openError,
+        error,
+        setOpenError,
         checkContract,
         checkIfWalletConnected,
         connectWallet,

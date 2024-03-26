@@ -9,7 +9,7 @@ import Style from './Navbar.module.css';
 import images from '../../img';
 import { NFTMarketplaceContext } from '../../context/NFTMarketplaceContext';
 import { Discover, HelpCenter, Notification, Profile, Sidebar } from './index';
-import { Button } from '../components_index';
+import { Button, Error } from '../components_index';
 
 const Navbar = () => {
   const [discover, setDiscover] = useState(false);
@@ -18,7 +18,9 @@ const Navbar = () => {
   const [profile, setProfile] = useState(false);
   const [openSidemenu, setOpenSidemenu] = useState(false);
 
-  const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
+  const { currentAccount, connectWallet, openError } = useContext(
+    NFTMarketplaceContext
+  );
   const router = useRouter();
 
   // functions for opening menus (sub-components)
@@ -169,6 +171,8 @@ const Navbar = () => {
         </div>
       )}
       {/* Sidebar END */}
+
+      {openError && <Error />}
     </div>
   );
 };

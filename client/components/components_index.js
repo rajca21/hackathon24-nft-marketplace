@@ -3,6 +3,7 @@ import Brand from './Brand/Brand';
 import Button from './Button/Button';
 import Category from './Category/Category';
 import Collection from './Collection/Collection';
+import Error from './Error/Error';
 import Filter from './Filter/Filter';
 import FollowerTab from './FollowerTab/FollowerTab';
 import Hero from './Hero/Hero';
@@ -22,6 +23,7 @@ export {
   Button,
   Category,
   Collection,
+  Error,
   Filter,
   FollowerTab,
   Hero,
