@@ -75,7 +75,7 @@ const aboutUs = () => {
         </div>
 
         <div className={Style.aboutus_box_title}>
-          <h2>⛱ Message from Founders</h2>
+          <h2>✨ Message from Founders</h2>
           <p>
             Our mission is simple: to empower fashion enthusiasts, designers,
             and collectors alike by providing a unique and immersive marketplace
