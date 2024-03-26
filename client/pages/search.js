@@ -40,7 +40,7 @@ const search = () => {
 
   useEffect(() => {
     fetchNFTs().then((item) => {
-      setNfts(item.reverse());
+      setNfts(item?.reverse());
       setNftsCopy(item);
     });
   }, []);

@@ -8,7 +8,7 @@ import { TbDownloadOff, TbDownload } from 'react-icons/tb';
 import Style from './Profile.module.css';
 import images from '../../../img';
 
-const Profile = () => {
+const Profile = ({ currentAccount }) => {
   return (
     <div className={Style.profile}>
       <div className={Style.profile_account}>
@@ -22,7 +22,7 @@ const Profile = () => {
 
         <div className={Style.profile_account_info}>
           <p>User name</p>
-          <small>User Address</small>
+          <small>{currentAccount.slice(0, 15)}...</small>
         </div>
       </div>
 
@@ -31,19 +31,19 @@ const Profile = () => {
           <div className={Style.profile_menu_one_item}>
             <FaUserAlt />
             <p>
-              <Link href={{ pathname: '/myprofile' }}>My Profile</Link>
+              <Link href={{ pathname: '/author' }}>My Profile</Link>
             </p>
           </div>
           <div className={Style.profile_menu_one_item}>
             <FaRegImage />
             <p>
-              <Link href={{ pathname: '/myitems' }}>My Items</Link>
+              <Link href={{ pathname: '/author' }}>My Items</Link>
             </p>
           </div>
           <div className={Style.profile_menu_one_item}>
             <FaUserEdit />
             <p>
-              <Link href={{ pathname: '/edit-profile' }}>Edit Profile</Link>
+              <Link href={{ pathname: '/account' }}>Edit Profile</Link>
             </p>
           </div>
         </div>
@@ -52,7 +52,7 @@ const Profile = () => {
           <div className={Style.profile_menu_one_item}>
             <MdHelpCenter />
             <p>
-              <Link href={{ pathname: '/help' }}>Help</Link>
+              <Link href={{ pathname: '/contact-us' }}>Help</Link>
             </p>
           </div>
           <div className={Style.profile_menu_one_item}>

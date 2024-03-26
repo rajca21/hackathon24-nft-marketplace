@@ -107,7 +107,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
           url: 'https://api.pinata.cloud/pinning/pinFileToIPFS',
           data: formData,
           headers: {
-            'Authorization':
+            Authorization:
               'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmMmRlMTA3ZC00NmI3LTRhZGYtYjQ5MC1kNjg1Mzg5ZmU5Y2UiLCJlbWFpbCI6ImdsYW1jaGFpbjI0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiNTMzMmMxNDIxZWFlMjYzNDUyMiIsInNjb3BlZEtleVNlY3JldCI6IjJmYjRhNWNiMmNhZDEwMWFmZDc5MjhiYTc4MDhhZWM1ODRiN2E5YjNkMWYxZGE3ZDI1YTNlOWIxZDU2ZTVhYjciLCJpYXQiOjE3MTEzMTg5MjF9.IOpJEM79kYQopxe7XvsMr9PIrTozXKdSYXgAwbfNrug',
             'Content-Type': 'multipart/form-data',
           },
@@ -136,7 +136,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
         url: 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
         data: data,
         headers: {
-          'Authorization':
+          Authorization:
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJmMmRlMTA3ZC00NmI3LTRhZGYtYjQ5MC1kNjg1Mzg5ZmU5Y2UiLCJlbWFpbCI6ImdsYW1jaGFpbjI0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJiNTMzMmMxNDIxZWFlMjYzNDUyMiIsInNjb3BlZEtleVNlY3JldCI6IjJmYjRhNWNiMmNhZDEwMWFmZDc5MjhiYTc4MDhhZWM1ODRiN2E5YjNkMWYxZGE3ZDI1YTNlOWIxZDU2ZTVhYjciLCJpYXQiOjE3MTEzMTg5MjF9.IOpJEM79kYQopxe7XvsMr9PIrTozXKdSYXgAwbfNrug',
           'Content-Type': 'application/json',
         },
@@ -302,6 +302,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
         fetchNFTs,
         fetchMyNFTsOrListedNFTs,
         buyNft,
+        createSale,
       }}
     >
       {children}

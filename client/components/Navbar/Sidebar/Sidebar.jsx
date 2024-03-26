@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -16,6 +17,8 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
   const [openDiscover, setOpenDiscover] = useState(false);
   const [openHelp, setOpenHelp] = useState(false);
 
+  const router = useRouter();
+
   const discover = [
     {
       name: 'Collection',
@@ -27,7 +30,7 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
     },
     {
       name: 'Author Profile',
-      link: 'author-profile',
+      link: 'author',
     },
     {
       name: 'NFT Details',
@@ -35,21 +38,17 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
     },
     {
       name: 'Account Settings',
-      link: 'account-settings',
+      link: 'account',
     },
     {
       name: 'Connect Wallet',
-      link: 'connect-wallet',
-    },
-    {
-      name: 'Blog',
-      link: 'blog',
+      link: 'connectwallet',
     },
   ];
   const helpCenter = [
     {
       name: 'About',
-      link: 'about',
+      link: 'about-us',
     },
     {
       name: 'Contact Us',
@@ -62,10 +61,6 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
     {
       name: 'Sign In',
       link: 'sign-in',
-    },
-    {
-      name: 'Subscription',
-      link: 'subscription',
     },
   ];
 
@@ -145,7 +140,12 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
         ) : (
           <Button
             btnName='Create'
-            handleClick={() => router.push('/uploadnft')}
+            handleClick={() => {
+              setOpenSidemenu(false);
+              setOpenDiscover(false);
+              setOpenHelp(false);
+              router.push('/uploadnft');
+            }}
           />
         )}
       </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MdNotifications } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
@@ -58,17 +57,25 @@ const Navbar = () => {
       <div className={Style.navbar_container}>
         {/* Left navbar section START */}
         <div className={Style.navbar_container_left}>
-          <Link href='/'>
-            <div className={Style.logo_container}>
-              <Image
-                src={images.logo}
-                alt='GlamChain Logo'
-                width={40}
-                height={40}
-              />
-              <p className={Style.logo_title}>GlamChain</p>
-            </div>
-          </Link>
+          <div
+            className={Style.logo_container}
+            onClick={() => {
+              setDiscover(false);
+              setHelp(false);
+              setNotification(false);
+              setProfile(false);
+              setOpenSidemenu(false);
+              router.push('/');
+            }}
+          >
+            <Image
+              src={images.logo}
+              alt='GlamChain Logo'
+              width={40}
+              height={40}
+            />
+            <p className={Style.logo_title}>GlamChain</p>
+          </div>
           <div className={Style.navbar_container_left_box_input}>
             <div className={Style.navbar_container_left_box_input_box}>
               <input type='text' />
@@ -137,7 +144,7 @@ const Navbar = () => {
                 className={Style.navbar_container_right_profile}
               />
 
-              {profile && <Profile />}
+              {profile && <Profile currentAccount={currentAccount} />}
             </div>
           </div>
           {/* User profile section END */}
