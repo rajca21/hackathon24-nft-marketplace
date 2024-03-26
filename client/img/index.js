@@ -47,6 +47,10 @@ import nft_image_3 from './nft-image-3.png';
 import musiceWave from './musicwave.png';
 import update from './update.png';
 import upload from './upload.png';
+import founder_aj from './founder-aj.png';
+import founder_ez from './founder-ez.png';
+import founder_mj from './founder-mj.png';
+import founder_nr from './founder-nr.jpeg';
 
 export default {
   collection,
@@ -98,4 +102,8 @@ export default {
   vimeo,
   youtube,
   zgcmq,
+  founder_aj,
+  founder_ez,
+  founder_mj,
+  founder_nr,
 };

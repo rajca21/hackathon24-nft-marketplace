@@ -10,10 +10,11 @@ const Hero = () => {
     <div className={Style.heroSection}>
       <div className={Style.heroSection_box}>
         <div className={Style.heroSection_box_left}>
-          <h1>Discover, collect and sell NFTs</h1>
+          <h1>Explore, collect and sell NFT fashion items</h1>
           <p>
-            Discover the most outstanding fashion NFTs and collect them. Create
-            your own NFTs and offer them for auction!
+            Welcome to our store, where innovation meets haute couture in the
+            digital realm! Join us on this journey as we revolutionize the
+            fashion industry one pixel at a time.
           </p>
           <Button btnName='Begin your journey' />
         </div>
