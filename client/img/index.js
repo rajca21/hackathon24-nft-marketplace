@@ -52,7 +52,8 @@ import founder_ez from './founder-ez.png';
 import founder_mj from './founder-mj.png';
 import founder_nr from './founder-nr.jpeg';
 import loader from './loader.gif';
-import error from './error.gif';
+import errorgif from './error.gif';
+import error from './error.webp';
 import mode from './mode.png';
 
 export default {
@@ -111,5 +112,6 @@ export default {
   founder_nr,
   loader,
   error,
+  errorgif,
   mode,
 };

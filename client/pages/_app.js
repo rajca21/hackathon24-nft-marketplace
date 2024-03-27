@@ -1,7 +1,9 @@
+import Head from 'next/head';
+
 import '../styles/globals.css';
 import { NFTMarketplaceProvider } from '../context/NFTMarketplaceContext';
 import { Navbar, Footer } from '../components/components_index';
-import { CgDarkMode } from "react-icons/cg";
+import { CgDarkMode } from 'react-icons/cg';
 import React, { useState, useEffect } from 'react';
 
 const App = ({ Component, pageProps }) => {
@@ -25,6 +27,10 @@ const App = ({ Component, pageProps }) => {
   return (
     <div>
       <NFTMarketplaceProvider>
+        <Head>
+          <title>GlamChain</title>
+          <link rel='icon' type='image/x-icon' href='./logo.png' />
+        </Head>
         <CgDarkMode onClick={toggleTheme} className='themeButton'></CgDarkMode>
         <Navbar />
         <Component {...pageProps} />

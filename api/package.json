@@ -1,0 +1,14 @@
+{
+  "name": "nftmarketplace-api",
+  "version": "1.0.0",
+  "description": "API created for Hackaton24 event",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ANS",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
