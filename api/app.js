@@ -6,7 +6,9 @@ const usersRouter = require('./routes/usersRoute.js');
 
 const app = express();
 app.use(express.json());
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use('/api/v1/nfts', nftsRouter);
 app.use('/api/v1/users', usersRouter);
