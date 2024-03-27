@@ -1,8 +1,21 @@
 const NFT = require('../models/nftModel');
+const APIFeatures = require('../utils/apiFeatures');
+
+const aliasTopNFTs = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+};
 
 const getAllNFTs = async (req, res) => {
   try {
-    const nfts = await NFT.find();
+    const features = new APIFeatures(NFT.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const nfts = await features.query;
 
     res.status(200).json({
       status: 'success',
@@ -87,6 +100,7 @@ const deleteNFT = async (req, res) => {
 };
 
 module.exports = {
+  aliasTopNFTs,
   getAllNFTs,
   getSingleNFT,
   createNFT,
