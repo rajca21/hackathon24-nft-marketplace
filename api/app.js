@@ -11,7 +11,4 @@ app.use(morgan('dev'));
 app.use('/api/v1/nfts', nftsRouter);
 app.use('/api/v1/users', usersRouter);
 
-const port = 8000;
-app.listen(port, () => {
-  console.log(`Backend running on port ${port}`);
-});
+module.exports = app;
