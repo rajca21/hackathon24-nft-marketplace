@@ -7,8 +7,8 @@ const nftSchema = new mongoose.Schema(
       required: [true, 'An NFT must have a name provided.'],
       unique: [true, 'An NFTs name must be unique.'],
       trim: true,
-      maxlength: [40, 'An NFTs name must have less than 40 characters.'],
-      minlength: [5, 'An NFTs name must have at least 5 characters.'],
+      min: [40, 'An NFTs name must have less than 40 characters.'],
+      max: [5, 'An NFTs name must have at least 5 characters.'],
     },
     slug: String,
     duration: {

@@ -1,42 +1,14 @@
-const getAllUsers = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal server error',
-  });
-};
+const User = require('../models/userModel');
 
-const getSingleUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal server error',
-  });
-};
-
-const createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal server error',
-  });
-};
-
-const updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal server error',
-  });
-};
-
-const deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'Internal server error',
-  });
+const getUser = async (req, res) => {
+  try {
+    const user = await User.find({ _id: req.params.id });
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
 };
 
 module.exports = {
-  getAllUsers,
-  getSingleUser,
-  createUser,
-  updateUser,
-  deleteUser,
+  getUser,
 };

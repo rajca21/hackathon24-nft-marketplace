@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Style from '../styles/index.module.css';
 import {
@@ -15,6 +16,7 @@ import {
   Slider,
   Subscribe,
 } from '../components/components_index';
+import LoginSignUp from '../pageComponents/login/LoginSignUp';
 import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
 import { getTopCreators } from '../utils/TopCreators';
 
@@ -22,6 +24,9 @@ const Home = () => {
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
   const [creators, setCreators] = useState([]);
+  const user = useSelector((state) => state.user);
+
+  console.log(user);
 
   const { fetchNFTs, checkIfWalletConnected } = useContext(
     NFTMarketplaceContext
@@ -35,14 +40,15 @@ const Home = () => {
     };
 
     checkIfWalletConnected();
-    fetch();
 
+    fetch();
     const creatorsCopy = getTopCreators(nftsCopy);
     setCreators(creatorsCopy);
   }, []);
 
   return (
     <div className={Style.homePage}>
+      <LoginSignUp />
       <Hero />
       <Service />
       <BigNFTSlider />

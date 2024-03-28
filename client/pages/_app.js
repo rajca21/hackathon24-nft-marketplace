@@ -6,6 +6,14 @@ import { Navbar, Footer } from '../components/components_index';
 import { CgDarkMode } from 'react-icons/cg';
 import React, { useState, useEffect } from 'react';
 
+import authReducer from '../state';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+
+const store = configureStore({
+  reducer: authReducer,
+});
+
 const App = ({ Component, pageProps }) => {
   const [theme, setTheme] = useState('light');
 
@@ -31,10 +39,15 @@ const App = ({ Component, pageProps }) => {
           <title>GlamChain</title>
           <link rel='icon' type='image/x-icon' href='./logo.png' />
         </Head>
-        <CgDarkMode onClick={toggleTheme} className='themeButton'></CgDarkMode>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
+        <Provider store={store}>
+          <CgDarkMode
+            onClick={toggleTheme}
+            className='themeButton'
+          ></CgDarkMode>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </Provider>
       </NFTMarketplaceProvider>
     </div>
   );
