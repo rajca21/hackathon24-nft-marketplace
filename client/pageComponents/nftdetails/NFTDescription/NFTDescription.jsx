@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MdVerified, MdCloudUpload, MdTimer } from 'react-icons/md';
-import { FaWallet, FaPercentage } from 'react-icons/fa';
+import { FaWallet } from 'react-icons/fa';
 import {
   TiSocialFacebook,
   TiSocialLinkedin,
@@ -18,20 +18,46 @@ import images from '../../../img';
 import { Button } from '../../../components/components_index';
 import { NFTTabs } from '../nftdetailsindex';
 import { NFTMarketplaceContext } from '../../../context/NFTMarketplaceContext';
+import { useSelector } from 'react-redux';
 
 const NFTDescription = ({ nft }) => {
   const [social, setSocial] = useState(false);
   const [creatorData, setCreatorData] = useState({});
   const [collectionData, setCollectionData] = useState({});
 
-  const { buyNft, currentAccount } = useContext(NFTMarketplaceContext);
+  const { buyNft, currentAccount, openError, createSale } = useContext(
+    NFTMarketplaceContext
+  );
+  const user = useSelector((state) => state.user);
   const router = useRouter();
-
-  const historyArray = [images.user1, images.user2, images.user3, images.user4];
 
   // Submenus functions
   const openSocial = () => {
     setSocial(!social);
+  };
+
+  // Creating new bid for Auction on buying NFT
+  const createBid = async () => {
+    try {
+      await fetch('http://localhost:8000/api/v1/bids', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          item: nft._id,
+          bidder: user._id,
+          amount: nft.price,
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleBuy = async () => {
+    await buyNft(router.query);
+    if (!openError) {
+      createBid();
+    }
   };
 
   useEffect(() => {
@@ -148,7 +174,7 @@ const NFTDescription = ({ nft }) => {
             <div
               className={Style.NFTDescription_box_profile_biding_box_price_bid}
             >
-              <small>Current Bid</small>
+              <small>Current Price</small>
               <p>
                 {nft.price} ETH <span></span>
               </p>
@@ -156,9 +182,9 @@ const NFTDescription = ({ nft }) => {
           </div>
 
           <div className={Style.NFTDescription_box_profile_biding_box_button}>
-            {currentAccount == nft.seller?.toLowerCase() ? (
+            {currentAccount == router.query.seller.toLowerCase() ? (
               <p>You are selling this masterpiece. Good for you!</p>
-            ) : currentAccount == nft.owner?.toLowerCase() ? (
+            ) : currentAccount == router.query.owner?.toLowerCase() ? (
               <Button
                 icon={<FaWallet />}
                 btnName='List on Marketplace'
@@ -174,7 +200,9 @@ const NFTDescription = ({ nft }) => {
                 <Button
                   icon={<FaWallet />}
                   btnName='Place a Bid'
-                  handleClick={() => buyNft(router.query)}
+                  handleClick={() => {
+                    handleBuy();
+                  }}
                   classStyle={Style.button}
                 />
               </>
@@ -182,7 +210,7 @@ const NFTDescription = ({ nft }) => {
           </div>
 
           <div className={Style.NFTDescription_box_profile_biding_box_card}>
-            <NFTTabs dataTab={historyArray} />
+            <NFTTabs nft={nft} />
           </div>
         </div>
       </div>

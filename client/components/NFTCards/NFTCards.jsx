@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AiFillHeart } from 'react-icons/ai';
@@ -6,8 +7,10 @@ import { BsImages } from 'react-icons/bs';
 
 import Style from './NFTCards.module.css';
 
-const NFTCards = ({ NFTData, ratingFilter, priceFilter }) => {
+const NFTCards = ({ NFTData, ratingFilter, priceFilter, created }) => {
   const [nfts, setNfts] = useState([]);
+
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const getAllNfts = async () => {
@@ -16,9 +19,26 @@ const NFTCards = ({ NFTData, ratingFilter, priceFilter }) => {
       });
       const nftsRes = await res.json();
       setNfts(nftsRes.data);
+      console.log(nftsRes.data);
     };
 
-    getAllNfts();
+    const getMyNFTs = async () => {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/nfts?creator=${user._id}`,
+        {
+          method: 'GET',
+        }
+      );
+      const nftsRes = await res.json();
+      setNfts(nftsRes.data);
+      console.log(nftsRes.data);
+    };
+
+    if (created) {
+      getMyNFTs();
+    } else {
+      getAllNfts();
+    }
   }, []);
 
   useEffect(() => {

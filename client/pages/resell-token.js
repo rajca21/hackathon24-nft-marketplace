@@ -21,6 +21,24 @@ const resellToken = () => {
   const resell = async () => {
     try {
       await createSale(tokenURI, price, true, id);
+
+      const res = await fetch(
+        `http://localhost:8000/api/v1/nfts?tokenID=${id}`,
+        {
+          method: 'GET',
+        }
+      );
+
+      const resNFT = await res.json();
+
+      await fetch(`http://localhost:8000/api/v1/nfts/${resNFT?.data[0]?._id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          price: price,
+        }),
+      });
+
+      router.push('/');
     } catch (error) {
       console.error('Something went wrong while reselling token: ', error);
     }
