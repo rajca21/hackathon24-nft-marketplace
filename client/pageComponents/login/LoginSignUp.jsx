@@ -6,46 +6,64 @@ import { setLogin } from '../../state';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
-
+ 
 import Style from './LoginAndSignUp.module.css';
-
+ 
 const registerSchema = yup.object().shape({
   username: yup.string().required('required'),
   email: yup.string().email('invalid email').required('required'),
   password: yup.string().required('required'),
 });
-
+ 
 const loginSchema = yup.object().shape({
   email: yup.string().email('invalid email').required('required'),
   password: yup.string().required('required'),
 });
-
+ 
 const initialValuesRegister = {
   name: '',
   email: '',
   password: '',
 };
-
+ 
 const initialValuesLogin = {
   email: '',
   password: '',
 };
-
+ 
 const login = () => {
   const [pageType, setPageType] = useState('login');
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+ 
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+ 
   const router = useRouter();
-
+ 
   const isLogin = pageType === 'login';
   const isRegister = pageType === 'register';
-
+ 
   const register = async (values, onSubmitProps) => {
-    if (!name || !password || !email) return;
-
+    if (!name) {
+      setNameError(true);
+      return;
+    }
+ 
+    if (!email) {
+      setEmailError(true);
+      return;
+    }
+ 
+    if (!password) {
+      setPasswordError(true);
+      return;
+    }
+ 
+   
     await fetch('http://localhost:8000/api/v1/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -55,16 +73,24 @@ const login = () => {
         password,
       }),
     });
-
+ 
     setName('');
     setEmail('');
     setPassword('');
     setPageType('login');
   };
-
+ 
   const login = async (values, onSubmitProps) => {
-    if (!password || !email) return;
-
+    if (!email) {
+      setEmailError(true);
+      return;
+    }
+ 
+    if (!password) {
+      setPasswordError(true);
+      return;
+    }
+ 
     const loggedInUserResponse = await fetch(
       'http://localhost:8000/api/v1/auth/login',
       {
@@ -76,9 +102,9 @@ const login = () => {
         }),
       }
     );
-
+ 
     const loggedIn = await loggedInUserResponse.json();
-
+ 
     if (loggedIn) {
       dispatch(
         setLogin({
@@ -88,12 +114,12 @@ const login = () => {
       );
     }
   };
-
+ 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
   };
-
+ 
   return (
     <div className={Style.login}>
       <div className={Style.login_box}>
@@ -125,9 +151,10 @@ const login = () => {
                           type='text'
                           placeholder='Name'
                           onBlur={handleBlur}
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={(e) => {setName(e.target.value); setNameError(false)}}
                           value={name}
                           name='name'
+                          className={nameError ? Style.error : name ? Style.blank : ''}
                         />
                       </div>
                     )}
@@ -137,9 +164,10 @@ const login = () => {
                         type='text'
                         placeholder='Email'
                         onBlur={handleBlur}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => {setEmail(e.target.value); setEmailError(false)}}
                         value={email}
                         name='email'
+                        className={emailError ? Style.error : name ? Style.blank : ''}
                       />
                     </div>
                     <div className={Style.user_box_input_box}>
@@ -148,9 +176,10 @@ const login = () => {
                         type='password'
                         placeholder='Password'
                         onBlur={handleBlur}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => {setPassword(e.target.value); setPasswordError(false)}}
                         value={password}
                         name='password'
+                        className={passwordError ? Style.error : name ? Style.blank : ''}
                       />
                     </div>
                     <div className={Style.button_box}>
@@ -158,7 +187,7 @@ const login = () => {
                         {isLogin ? 'Login' : 'Register'}
                       </button>
                     </div>
-
+ 
                     <p
                       onClick={() => {
                         setPageType(isLogin ? 'register' : 'login');
@@ -180,5 +209,5 @@ const login = () => {
     </div>
   );
 };
-
+ 
 export default login;

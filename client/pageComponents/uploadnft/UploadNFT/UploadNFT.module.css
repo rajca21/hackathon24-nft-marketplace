@@ -35,7 +35,7 @@
 }
 
 .upload_box_slider p {
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -64,4 +64,5 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
 }

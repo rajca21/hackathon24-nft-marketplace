@@ -125,6 +125,14 @@
   color: red;
 }
 
+.error {
+  border: 1px solid red !important;
+}
+ 
+.blank {
+  border: 1px solid black !important;
+}
+
 @media screen and (max-width: 35em) {
   .user_box_social_item {
     font-size: 1rem;
