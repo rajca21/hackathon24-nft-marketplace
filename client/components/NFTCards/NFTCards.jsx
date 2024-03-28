@@ -1,27 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import { BsImages } from 'react-icons/bs';
 
 import Style from './NFTCards.module.css';
 
 const NFTCards = ({ NFTData }) => {
-  const [like, setLike] = useState(true);
+  const [nfts, setNfts] = useState([]);
 
-  const likeNft = () => {
-    setLike(!like);
-  };
+  useEffect(() => {
+    const getAllNfts = async () => {
+      const res = await fetch('http://localhost:8000/api/v1/nfts', {
+        method: 'GET',
+      });
+      const nftsRes = await res.json();
+      setNfts(nftsRes.data);
+      console.log(nftsRes.data);
+    };
+
+    getAllNfts();
+  }, []);
 
   return (
     <div className={Style.NFTCard}>
-      {NFTData &&
-        NFTData.map((el, index) => (
-          <Link href={{ pathname: '/nft-details', query: el }} key={index + 1}>
+      {nfts &&
+        nfts.map((el, index) => (
+          <Link
+            href={{
+              pathname: '/nft-details',
+              query: NFTData.find((item) => item.tokenId === el.tokenID),
+            }}
+            key={index + 1}
+          >
             <div className={Style.NFTCard_box}>
               <div className={Style.NFTCard_box_img}>
                 <Image
-                  src={el.image}
+                  src={el.imageCover}
                   alt={el.name}
                   width={600}
                   height={600}
@@ -31,25 +46,11 @@ const NFTCards = ({ NFTData }) => {
 
               <div className={Style.NFTCard_box_update}>
                 <div className={Style.NFTCard_box_update_left}>
-                  <div
-                    className={Style.NFTCard_box_update_left_like}
-                    onClick={likeNft}
-                  >
-                    {like ? (
-                      <AiOutlineHeart />
-                    ) : (
-                      <AiFillHeart
-                        className={Style.NFTCard_box_update_left_like_icon}
-                      />
-                    )}{' '}
-                    22
-                  </div>
-                </div>
-
-                <div className={Style.NFTCard_box_update_right}>
-                  <div className={Style.NFTCard_box_update_right_info}>
-                    <small>Remaining Time</small>
-                    <p>3h : 15m : 20s</p>
+                  <div className={Style.NFTCard_box_update_left_like}>
+                    <AiFillHeart
+                      className={Style.NFTCard_box_update_left_like_icon}
+                    />
+                    {el.rating}
                   </div>
                 </div>
               </div>
@@ -58,7 +59,7 @@ const NFTCards = ({ NFTData }) => {
                 <div className={Style.NFTCard_box_update_details_price}>
                   <div className={Style.NFTCard_box_update_details_price_box}>
                     <h4>
-                      {el.name} #{el.tokenId}
+                      {el.name.slice(0, 10)} #{el.tokenID}
                     </h4>
 
                     <div
@@ -69,16 +70,14 @@ const NFTCards = ({ NFTData }) => {
                           Style.NFTCard_box_update_details_price_box_bid
                         }
                       >
-                        <small>Current Bid</small>
+                        <small>Current Price</small>
                         <p>{el.price} ETH</p>
                       </div>
                       <div
                         className={
                           Style.NFTCard_box_update_details_price_box_stock
                         }
-                      >
-                        <small>61 in Stock</small>
-                      </div>
+                      ></div>
                     </div>
                   </div>
                 </div>
