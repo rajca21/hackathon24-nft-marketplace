@@ -5,16 +5,12 @@ import Style from '../styles/index.module.css';
 import {
   BigNFTSlider,
   Brand,
-  Category,
   Collection,
-  Filter,
   FollowerTab,
   Hero,
   Loader,
   NFTCards,
   Service,
-  Slider,
-  Subscribe,
 } from '../components/components_index';
 import LoginSignUp from '../pageComponents/login/LoginSignUp';
 import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
@@ -58,21 +54,17 @@ const Home = () => {
           <Hero />
           <Service />
           <BigNFTSlider />
-          <Slider />
           <Collection />
-          <Filter />
           {nfts?.length === 0 ? (
             <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
           ) : (
             <NFTCards NFTData={nfts} />
           )}
-          <Category />
           {creators.length === 0 ? (
             <Loader message='Fetching top Creators, this might take a few moments, please wait!' />
           ) : (
             <FollowerTab TopCreator={creators} />
           )}
-          <Subscribe />
           <Brand />
         </>
       )}

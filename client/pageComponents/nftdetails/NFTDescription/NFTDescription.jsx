@@ -1,15 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  MdVerified,
-  MdCloudUpload,
-  MdTimer,
-  MdReportProblem,
-  MdOutlineDeleteSweep,
-} from 'react-icons/md';
-import { BsThreeDots } from 'react-icons/bs';
+import { MdVerified, MdCloudUpload, MdTimer } from 'react-icons/md';
 import { FaWallet, FaPercentage } from 'react-icons/fa';
 import {
   TiSocialFacebook,
@@ -28,61 +21,48 @@ import { NFTMarketplaceContext } from '../../../context/NFTMarketplaceContext';
 
 const NFTDescription = ({ nft }) => {
   const [social, setSocial] = useState(false);
-  const [NFTMenu, setNFTMenu] = useState(false);
-  const [history, setHistory] = useState(true);
-  const [provenance, setProvenance] = useState(false);
-  const [owner, setOwner] = useState(false);
+  const [creatorData, setCreatorData] = useState({});
+  const [collectionData, setCollectionData] = useState({});
 
   const { buyNft, currentAccount } = useContext(NFTMarketplaceContext);
   const router = useRouter();
 
   const historyArray = [images.user1, images.user2, images.user3, images.user4];
-  const provenanceArray = [
-    images.user5,
-    images.user6,
-    images.user7,
-    images.user8,
-  ];
-  const ownerArray = [images.user1, images.user9, images.user3, images.user10];
 
   // Submenus functions
   const openSocial = () => {
     setSocial(!social);
-    setNFTMenu(false);
   };
-  const openNFTMenu = () => {
-    setNFTMenu(!NFTMenu);
-    setSocial(false);
-  };
-  const openTabs = (e) => {
-    const btnText = e.target.innerText;
 
-    if (btnText == 'Bid History') {
-      setHistory(true);
-      setProvenance(false);
-      setOwner(false);
-    } else if (btnText == 'Provenance') {
-      setHistory(false);
-      setProvenance(true);
-      setOwner(false);
-    }
-  };
-  const openOwner = () => {
-    if (!owner) {
-      setOwner(true);
-      setHistory(false);
-      setProvenance(false);
-    } else {
-      setOwner(false);
-      setHistory(true);
-    }
-  };
+  useEffect(() => {
+    const fetchCreatorAndCollection = async () => {
+      const res = await fetch(
+        `http://localhost:8000/api/v1/users/${nft?.creator}`,
+        {
+          method: 'GET',
+        }
+      );
+      const creatorRes = await res.json();
+      setCreatorData(creatorRes[0]);
+
+      const resCollection = await fetch(
+        `http://localhost:8000/api/v1/collections/${nft?.nftCollection}`,
+        {
+          method: 'GET',
+        }
+      );
+      const collectionRes = await resCollection.json();
+      setCollectionData(collectionRes.data);
+    };
+
+    fetchCreatorAndCollection();
+  }, [nft]);
 
   return (
     <div className={Style.NFTDescription}>
       <div className={Style.NFTDescription_box}>
         <div className={Style.NFTDescription_box_share}>
-          <p>Metaverses</p>
+          <p>{collectionData?.name}</p>
           <div className={Style.NFTDescription_box_share_box}>
             <MdCloudUpload
               className={Style.NFTDescription_box_share_box_icon}
@@ -92,7 +72,7 @@ const NFTDescription = ({ nft }) => {
             {social && (
               <div className={Style.NFTDescription_box_share_box_social}>
                 <a href='#'>
-                  <TiSocialFacebook /> Facebooke
+                  <TiSocialFacebook /> Facebook
                 </a>
                 <a href='#'>
                   <TiSocialInstagram /> Instragram
@@ -108,39 +88,17 @@ const NFTDescription = ({ nft }) => {
                 </a>
               </div>
             )}
-
-            <BsThreeDots
-              className={Style.NFTDescription_box_share_box_icon}
-              onClick={openNFTMenu}
-            />
-
-            {NFTMenu && (
-              <div className={Style.NFTDescription_box_share_box_social}>
-                <a href='#'>
-                  <BiDollar /> Change price
-                </a>
-                <a href='#'>
-                  <BiTransferAlt /> Transfer
-                </a>
-                <a href='#'>
-                  <MdReportProblem /> Report problem
-                </a>
-                <a href='#'>
-                  <MdOutlineDeleteSweep /> Delete item
-                </a>
-              </div>
-            )}
           </div>
         </div>
 
         <div className={Style.NFTDescription_box_profile}>
           <h1>
-            {nft.name} #{nft.tokenId}
+            {nft.name} #{nft.tokenID}
           </h1>
           <div className={Style.NFTDescription_box_profile_box}>
             <div className={Style.NFTDescription_box_profile_box_left}>
               <Image
-                src={images.user1}
+                src={creatorData?.photo}
                 alt='profile'
                 width={40}
                 height={40}
@@ -150,7 +108,7 @@ const NFTDescription = ({ nft }) => {
                 <small>Creator</small> <br />
                 <Link href={{ pathname: '/author', query: `${nft.seller}` }}>
                   <span>
-                    User Name <MdVerified />
+                    {creatorData?.name} <MdVerified />
                   </span>
                 </Link>
               </div>
@@ -158,7 +116,7 @@ const NFTDescription = ({ nft }) => {
 
             <div className={Style.NFTDescription_box_profile_box_right}>
               <Image
-                src={images.creatorbackground1}
+                src={collectionData?.imageCover}
                 alt='profile'
                 width={40}
                 height={40}
@@ -168,7 +126,7 @@ const NFTDescription = ({ nft }) => {
               <div className={Style.NFTDescription_box_profile_box_right_info}>
                 <small>Collection</small> <br />
                 <span>
-                  Coll app <MdVerified />
+                  {collectionData?.name} <MdVerified />
                 </span>
               </div>
             </div>
@@ -212,63 +170,40 @@ const NFTDescription = ({ nft }) => {
             >
               <small>Current Bid</small>
               <p>
-                {nft.price} ETH <span>( ≈ $3,221.22)</span>
+                {nft.price} ETH <span></span>
               </p>
             </div>
-
-            <span>[96 in stock]</span>
           </div>
 
           <div className={Style.NFTDescription_box_profile_biding_box_button}>
-            {currentAccount == nft.seller.toLowerCase() ? (
+            {currentAccount == nft.seller?.toLowerCase() ? (
               <p>You are selling this masterpiece. Good for you!</p>
-            ) : currentAccount == nft.owner.toLowerCase() ? (
+            ) : currentAccount == nft.owner?.toLowerCase() ? (
               <Button
                 icon={<FaWallet />}
                 btnName='List on Marketplace'
-                handleClick={() => router.push(`/resell-token?id=${nft.tokenId}&tokenURI=${nft.tokenURI}`)}
+                handleClick={() =>
+                  router.push(
+                    `/resell-token?id=${nft.tokenID}&tokenURI=${nft.tokenURI}`
+                  )
+                }
                 classStyle={Style.button}
               />
             ) : (
               <>
                 <Button
                   icon={<FaWallet />}
-                  btnName='Buy NFT'
+                  btnName='Place a Bid'
                   handleClick={() => buyNft(nft)}
-                  classStyle={Style.button}
-                />
-                <Button
-                  icon={<FaPercentage />}
-                  btnName='Make an Offer'
-                  handleClick={() => {}}
                   classStyle={Style.button}
                 />
               </>
             )}
           </div>
 
-          <div className={Style.NFTDescription_box_profile_biding_box_tabs}>
-            <button onClick={(e) => openTabs(e)}>Bid History</button>
-            <button onClick={(e) => openTabs(e)}>Provenance</button>
-            <button onClick={() => openOwner()}>Owner</button>
+          <div className={Style.NFTDescription_box_profile_biding_box_card}>
+            <NFTTabs dataTab={historyArray} />
           </div>
-
-          {history && (
-            <div className={Style.NFTDescription_box_profile_biding_box_card}>
-              <NFTTabs dataTab={historyArray} />
-            </div>
-          )}
-          {provenance && (
-            <div className={Style.NFTDescription_box_profile_biding_box_card}>
-              <NFTTabs dataTab={provenanceArray} />
-            </div>
-          )}
-
-          {owner && (
-            <div className={Style.NFTDescription_box_profile_biding_box_card}>
-              <NFTTabs dataTab={ownerArray} icon={<MdVerified />} />
-            </div>
-          )}
         </div>
       </div>
     </div>

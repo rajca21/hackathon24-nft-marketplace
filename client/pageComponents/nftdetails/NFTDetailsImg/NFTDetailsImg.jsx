@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { BsImage } from 'react-icons/bs';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
@@ -10,6 +11,8 @@ const NFTDetailsImg = ({ nft }) => {
   const [description, setDescription] = useState(true);
   const [details, setDetails] = useState(true);
   const [like, setLike] = useState(false);
+
+  const router = useRouter();
 
   const likeNFT = () => {
     setLike(!like);
@@ -37,13 +40,13 @@ const NFTDetailsImg = ({ nft }) => {
                   className={Style.NFTDetailsImg_box_NFT_like_icon}
                 />
               )}
-              <span>21</span>
+              <span>{nft.rating}</span>
             </p>
           </div>
 
           <div className={Style.NFTDetailsImg_box_NFT_img}>
             <Image
-              src={nft.image}
+              src={nft.imageCover}
               className={Style.NFTDetailsImg_box_NFT_img_img}
               alt='NFT'
               width={700}
@@ -74,15 +77,14 @@ const NFTDetailsImg = ({ nft }) => {
 
         {details && (
           <div className={Style.NFTDetailsImg_box_details_box}>
-            <small>2000 x 2000 px.IMAGE(685KB)</small>
             <p>
               <small>Contract Address</small>
               <br></br>
-              {nft.seller}
+              {router.query.seller}
             </p>
             <p>
               <small>Token ID</small>
-              &nbsp; &nbsp; {nft.tokenId}
+              &nbsp; &nbsp; {nft.tokenID}
             </p>
           </div>
         )}
