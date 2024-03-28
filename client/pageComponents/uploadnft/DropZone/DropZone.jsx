@@ -117,8 +117,8 @@ const DropZone = ({
 
                   {category && (
                     <p>
-                      <span>Category</span>
-                      {category}
+                      <span>Collection</span>
+                      {category.name}
                     </p>
                   )}
                 </div>

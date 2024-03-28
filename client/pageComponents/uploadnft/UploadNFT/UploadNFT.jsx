@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MdOutlineHttp, MdOutlineAttachFile } from 'react-icons/md';
@@ -8,7 +9,6 @@ import { TiTick } from 'react-icons/ti';
 
 import Style from './UploadNFT.module.css';
 import formStyle from '../../account/Form/Form.module.css';
-import images from '../../../img';
 import { Button } from '../../../components/components_index';
 import { DropZone } from '../uploadnftindex';
 
@@ -19,12 +19,13 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
   const [description, setDescription] = useState('');
   const [royalties, setRoyalties] = useState('');
   const [fileSize, setFileSize] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(null);
   const [properties, setProperties] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
   const [collections, setCollections] = useState([]);
 
+  const user = useSelector((state) => state.user);
   const router = useRouter();
 
   useEffect(() => {
@@ -190,12 +191,13 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
                 price,
                 image,
                 description,
-                router
-                // website,
-                // royalties,
-                // fileSize,
-                // category,
-                // properties
+                router,
+                website,
+                royalties,
+                category?._id,
+                fileSize,
+                properties,
+                user?._id
               )
             }
             classStyle={Style.upload_box_btn_style}

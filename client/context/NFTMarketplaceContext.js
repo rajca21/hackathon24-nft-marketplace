@@ -130,13 +130,28 @@ export const NFTMarketplaceProvider = ({ children }) => {
   };
 
   // Function for creating NFTs
-  const createNFT = async (name, price, image, description, router) => {
+  const createNFT = async (
+    name,
+    price,
+    image,
+    description,
+    router,
+    website,
+    royalties,
+    collection,
+    size,
+    properties,
+    creator
+  ) => {
     try {
-      if (!name || !description || !price || !image)
+      if (!name || !description || !price || !image || !collection || !creator)
         return (
           setOpenError(true),
           setError('Required data for creating NFT is missing!')
         );
+
+      console.log(creator);
+      console.log(collection);
 
       const data = JSON.stringify({ name, description, image });
 
@@ -153,13 +168,90 @@ export const NFTMarketplaceProvider = ({ children }) => {
 
       const url = `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`;
 
-      await createSale(url, price);
+      const res = await createSale(url, price);
+
+      await insertIntoDb(
+        res,
+        price,
+        website,
+        royalties,
+        collection,
+        size,
+        properties,
+        creator
+      );
       router.push('/search');
     } catch (error) {
       setError('Something went wrong while creating NFT!');
       setOpenError(true);
       console.error('Something went wrong while creating NFT: ' + error);
     }
+  };
+
+  const insertIntoDb = async (
+    saleData,
+    price,
+    website,
+    royalties,
+    collection,
+    size,
+    properties,
+    creator
+  ) => {
+    const res = await fetchNFTs();
+
+    let name = '';
+    let description = '';
+    let tokenId = 1;
+    let ownerSC = '';
+    let sellerSC = '';
+    let image = '';
+    let tokenURI = '';
+
+    for (let i = 0; i < res.length; i++) {
+      if (res[i].price == price.toString()) {
+        name = res[i].name;
+        description = res[i].description;
+        image = res[i].image;
+        tokenURI = res[i].tokenURI;
+        tokenId = res[i].tokenId;
+        ownerSC = res[i].owner;
+        sellerSC = res[i].seller;
+        break;
+      }
+    }
+
+    const rndIntNum = Math.floor(Math.random() * 6) + 1;
+    const rndIntDeg = Math.floor(Math.random() * 9) + 1;
+
+    let rating = `${rndIntNum}.${rndIntDeg}` * 1;
+    let ratingsQuantity = Math.floor(Math.random() * 100) + 1;
+
+    await fetch('http://localhost:8000/api/v1/nfts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        rating,
+        ratingsQuantity,
+        price,
+        summary: '',
+        description,
+        imageCover: image,
+        creator,
+        owner: creator,
+        ownerSC,
+        seller: creator,
+        sellerSC,
+        nftCollection: collection,
+        royalties,
+        size,
+        properties,
+        tokenID: tokenId,
+        tokenURI,
+        website,
+      }),
+    });
   };
 
   // Function for creating NFT sale

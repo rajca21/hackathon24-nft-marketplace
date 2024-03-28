@@ -27,11 +27,11 @@ const nftSchema = new mongoose.Schema(
     summary: {
       type: String,
       trim: true,
-      required: [true, 'An NFT must have a description.'],
     },
     description: {
       type: String,
       trim: true,
+      required: true,
     },
     imageCover: {
       type: String,
@@ -47,13 +47,44 @@ const nftSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    ownerSC: {
+      type: String,
+      default: '',
+    },
     seller: {
       type: String,
       default: null,
     },
+    sellerSC: {
+      type: String,
+      default: '',
+    },
     nftCollection: {
       type: String,
       default: null,
+    },
+    royalties: {
+      type: String,
+      default: 0,
+    },
+    size: {
+      type: String,
+      default: 0,
+    },
+    properties: {
+      type: String,
+      default: '',
+    },
+    tokenID: {
+      type: Number,
+    },
+    tokenURI: {
+      type: String,
+      default: '',
+    },
+    website: {
+      type: String,
+      default: '',
     },
   },
   {

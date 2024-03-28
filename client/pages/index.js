@@ -39,6 +39,7 @@ const Home = () => {
       const res = await fetchNFTs();
       setNfts(res?.reverse());
       setNftsCopy(res);
+      console.log(res);
     };
 
     checkIfWalletConnected();
