@@ -63,7 +63,7 @@ const search = () => {
     <div>
       {isAuth && (
         <>
-          <Banner bannerImage={images.creatorbackground2} />
+          <Banner bannerImage={images.bg} />
           <SearchBar
             onHandleSearch={onHandleSearch}
             onClearSearch={onClearSearch}

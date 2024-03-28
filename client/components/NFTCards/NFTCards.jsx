@@ -116,7 +116,7 @@ const NFTCards = ({ NFTData, ratingFilter, priceFilter }) => {
                         className={Style.NFTCard_box_update_details_price_box}
                       >
                         <h4>
-                          {el.name.slice(0, 10)} #{el.tokenID}
+                          {el.name} 
                         </h4>
 
                         <div

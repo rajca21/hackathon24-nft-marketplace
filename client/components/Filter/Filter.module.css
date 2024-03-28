@@ -1,5 +1,4 @@
 .filter {
-  padding: 4rem 0;
   width: 100%;
 }
 
@@ -46,6 +45,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-top: -80px;
 }
 
 .filter_box_items {

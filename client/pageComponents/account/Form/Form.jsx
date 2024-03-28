@@ -41,12 +41,21 @@ const Form = ({ userData, image }) => {
           wallet: currentAccount,
         }),
       });
-
-      router.push('/account');
+  
+      // Update state values directly
+      setName(name);
+      setDesc(desc);
+      setWebsite(website);
+      setFb(fb);
+      setTw(tw);
+      setIg(ig);
+  
+      // No need to refresh the whole page, just stay on the current page
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <>

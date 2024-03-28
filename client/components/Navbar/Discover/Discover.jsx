@@ -8,7 +8,7 @@ const Discover = () => {
 
   const discover = [
     {
-      name: 'Search',
+      name: 'Store',
       link: 'search',
     },
     {

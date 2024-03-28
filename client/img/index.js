@@ -54,7 +54,8 @@ import founder_nr from './founder-nr.jpeg';
 import loader from './loader.gif';
 import errorgif from './error.gif';
 import error from './error.webp';
-import mode from './mode.png';
+import mode from './mode.png'; 
+import bg from './bg2.png'; 
 
 export default {
   collection,
@@ -114,4 +115,5 @@ export default {
   error,
   errorgif,
   mode,
+  bg,
 };

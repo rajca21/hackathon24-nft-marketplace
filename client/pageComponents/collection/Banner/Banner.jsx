@@ -12,7 +12,7 @@ const Banner = ({ bannerImage }) => {
           objectFit='cover'
           alt='background'
           width={0}
-          height={500}
+          height={150}
           sizes='100vw'
         />
       </div>
@@ -23,7 +23,7 @@ const Banner = ({ bannerImage }) => {
           objectFit='cover'
           alt='background'
           width={1600}
-          height={900}
+          height={400}
         />
       </div>
     </div>
