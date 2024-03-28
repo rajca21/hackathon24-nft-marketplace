@@ -14,14 +14,6 @@ const Discover = () => {
       link: 'search',
     },
     {
-      name: 'Author Profile',
-      link: 'author-profile',
-    },
-    {
-      name: 'NFT Details',
-      link: 'nft-details',
-    },
-    {
       name: 'Account Settings',
       link: 'account',
     },

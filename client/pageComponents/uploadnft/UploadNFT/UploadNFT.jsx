@@ -27,21 +27,6 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
 
   const router = useRouter();
 
-  const categoryArray = [
-    {
-      image: images.nft_image_1,
-      category: 'High Fashion',
-    },
-    {
-      image: images.nft_image_2,
-      category: 'Art',
-    },
-    {
-      image: images.nft_image_3,
-      category: 'Music',
-    },
-  ];
-
   useEffect(() => {
     const getCollections = async () => {
       const res = await fetch('http://localhost:8000/api/v1/collections', {

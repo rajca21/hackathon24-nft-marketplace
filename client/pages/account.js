@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -7,14 +7,21 @@ import { useDropzone } from 'react-dropzone';
 import Style from '../styles/account.module.css';
 import images from '../img';
 import { Form } from '../pageComponents/account/accountindex';
+import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
 
 const account = () => {
   const [fileUrl, setFileUrl] = useState(null);
+  const [image, setImage] = useState(null);
+
+  const { uploadToPinata } = useContext(NFTMarketplaceContext);
   const isAuth = Boolean(useSelector((state) => state.token));
+  const user = useSelector((state) => state.user);
   const router = useRouter();
 
   const onDrop = useCallback(async (acceptedFile) => {
-    setFileUrl(acceptedFile[0]);
+    const url = await uploadToPinata(acceptedFile[0]);
+    setFileUrl(url);
+    setImage(url);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -27,6 +34,8 @@ const account = () => {
     if (!isAuth) {
       router.push('/');
     }
+
+    setImage(user?.photo);
   }, [isAuth]);
 
   return (
@@ -42,7 +51,11 @@ const account = () => {
             <div className={Style.account_box_img} {...getRootProps()}>
               <input {...getInputProps()} />
               <Image
-                src={images.user1}
+                src={
+                  image
+                    ? image
+                    : 'https://cdn.pixabay.com/photo/2021/02/12/07/03/icon-6007530_640.png'
+                }
                 alt='account upload'
                 width={150}
                 height={150}
@@ -51,7 +64,7 @@ const account = () => {
               <p className={Style.account_box_img_para}>Change Image</p>
             </div>
             <div className={Style.account_box_form}>
-              <Form />
+              <Form userData={user} image={image} />
             </div>
           </div>
         </>

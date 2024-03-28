@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Please provide  your name!'],
+      required: [true, 'Please provide your name!'],
     },
     email: {
       type: String,
@@ -17,7 +17,34 @@ const userSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    photo: String,
+    photo: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    website: {
+      type: String,
+      default: '',
+    },
+    facebook: {
+      type: String,
+      default: '',
+    },
+    twitter: {
+      type: String,
+      default: '',
+    },
+    instagram: {
+      type: String,
+      default: '',
+    },
+    wallet: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,

@@ -23,6 +23,7 @@ const Navbar = () => {
     NFTMarketplaceContext
   );
   const isAuth = Boolean(useSelector((state) => state.token));
+  const user = useSelector((state) => state.user);
   const router = useRouter();
 
   // functions for opening menus (sub-components)
@@ -149,7 +150,10 @@ const Navbar = () => {
             <div className={Style.navbar_container_right_profile_box}>
               <div className={Style.navbar_container_right_profile}>
                 <Image
-                  src={images.user1}
+                  src={
+                    user?.photo ||
+                    'https://cdn.pixabay.com/photo/2021/02/12/07/03/icon-6007530_640.png'
+                  }
                   alt='Proifle'
                   width={40}
                   height={40}
