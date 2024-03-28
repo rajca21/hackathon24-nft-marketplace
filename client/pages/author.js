@@ -6,7 +6,6 @@ import Style from '../styles/author.module.css';
 import images from '../img';
 import { Banner } from '../pageComponents/collection/collectionIndex';
 import { Brand, Title } from '../components/components_index';
-import FollowerTabCard from '../components/FollowerTab/FollowerTabCard/FollowerTabCard';
 import {
   AuthorNFTCardBox,
   AuthorProfileCard,
@@ -15,52 +14,18 @@ import {
 import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
 
 const author = () => {
-  const [collectables, setCollectables] = useState(true);
+  const [listed, setListed] = useState(true);
+  const [owned, setOwned] = useState(false);
   const [created, setCreated] = useState(false);
-  const [like, setLike] = useState(false);
-  const [follower, setFollower] = useState(false);
-  const [following, setFollowing] = useState(false);
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
+  const [allNfts, setAllNfts] = useState([]);
 
-  const { fetchMyNFTsOrListedNFTs, currentAccount } = useContext(
+  const { fetchNFTs, fetchMyNFTsOrListedNFTs, currentAccount } = useContext(
     NFTMarketplaceContext
   );
   const isAuth = Boolean(useSelector((state) => state.token));
   const router = useRouter();
-
-  const followerArray = [
-    {
-      background: images.creatorbackground1,
-      user: images.user1,
-      seller: '7d64gf748849j47fy488444',
-    },
-    {
-      background: images.creatorbackground2,
-      user: images.user2,
-      seller: '7d64gf748849j47fy488444',
-    },
-    {
-      background: images.creatorbackground3,
-      user: images.user3,
-      seller: '7d64gf748849j47fy488444',
-    },
-    {
-      background: images.creatorbackground4,
-      user: images.user4,
-      seller: '7d64gf748849j47fy488444',
-    },
-    {
-      background: images.creatorbackground5,
-      user: images.user5,
-      seller: '7d64gf748849j47fy488444',
-    },
-    {
-      background: images.creatorbackground6,
-      user: images.user6,
-      seller: '7d64gf748849j47fy488444',
-    },
-  ];
 
   useEffect(() => {
     fetchMyNFTsOrListedNFTs('fetchItemsListed').then((items) => {
@@ -72,6 +37,15 @@ const author = () => {
     fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
       setMyNFTs(items);
     });
+  }, []);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await fetchNFTs();
+      setAllNfts(res);
+    };
+
+    fetch();
   }, []);
 
   useEffect(() => {
@@ -87,31 +61,19 @@ const author = () => {
           <Banner bannerImage={images.creatorbackground2} />
           <AuthorProfileCard currentAccount={currentAccount} />
           <AuthorTabs
-            setCollectables={setCollectables}
+            setListed={setListed}
             setCreated={setCreated}
-            setLike={setLike}
-            setFollower={setFollower}
-            setFollowing={setFollowing}
+            setOwned={setOwned}
             currentAccount={currentAccount}
           />
           <AuthorNFTCardBox
-            collectables={collectables}
+            listed={listed}
+            owned={owned}
             created={created}
-            like={like}
-            follower={follower}
-            following={following}
             nfts={nfts}
             myNFTS={myNFTs}
+            allNFTs={allNfts}
           />
-          <Title
-            heading='Popular Creators'
-            paragraph='Explore some of the most unique NFT artists'
-          />
-          <div className={Style.author_box}>
-            {followerArray.map((el, i) => (
-              <FollowerTabCard i={i} el={el} />
-            ))}
-          </div>
           <Brand />
         </>
       )}
