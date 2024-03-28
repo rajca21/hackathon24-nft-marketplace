@@ -1,62 +1,77 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MdNotifications } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
 import { CgMenuRight } from 'react-icons/cg';
-
+ 
 import Style from './Navbar.module.css';
 import images from '../../img';
 import { NFTMarketplaceContext } from '../../context/NFTMarketplaceContext';
 import { Discover, HelpCenter, Notification, Profile, Sidebar } from './index';
 import { Button, Error } from '../components_index';
-
+ 
 const Navbar = () => {
   const [discover, setDiscover] = useState(false);
   const [help, setHelp] = useState(false);
   const [notification, setNotification] = useState(false);
   const [profile, setProfile] = useState(false);
   const [openSidemenu, setOpenSidemenu] = useState(false);
-
+ 
   const { currentAccount, connectWallet, openError } = useContext(
     NFTMarketplaceContext
   );
   const isAuth = Boolean(useSelector((state) => state.token));
   const user = useSelector((state) => state.user);
   const router = useRouter();
-
-  // functions for opening menus (sub-components)
+ 
+  // Function to close all submenus
+  const closeSubmenus = () => {
+    setDiscover(false);
+    setHelp(false);
+    setNotification(false);
+    setProfile(false);
+  };
+ 
+  // Listen for route changes and close submenus
+  useEffect(() => {
+    const handleRouteChange = () => {
+      closeSubmenus();
+    };
+ 
+    router.events.on('routeChangeStart', handleRouteChange);
+ 
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router.events]);
+ 
+  // Functions for opening menus (sub-components)
   const toggleDiscover = () => {
+    closeSubmenus();
     setDiscover(!discover);
-    setHelp(false);
-    setNotification(false);
-    setProfile(false);
   };
-
+ 
   const toggleHelp = () => {
+    closeSubmenus();
     setHelp(!help);
-    setDiscover(false);
-    setNotification(false);
-    setProfile(false);
   };
-
+ 
   const openNotification = () => {
+    closeSubmenus();
     setNotification(!notification);
-    setDiscover(false);
-    setHelp(false);
-    setProfile(false);
   };
+ 
   const openProfile = () => {
+    closeSubmenus();
     setProfile(!profile);
-    setDiscover(false);
-    setHelp(false);
-    setNotification(false);
   };
+ 
   const openSidebar = () => {
     setOpenSidemenu(!openSidemenu);
   };
-
+ 
   return (
     <div className={Style.navbar}>
       <div className={Style.navbar_container}>
@@ -65,10 +80,7 @@ const Navbar = () => {
           <div
             className={Style.logo_container}
             onClick={() => {
-              setDiscover(false);
-              setHelp(false);
-              setNotification(false);
-              setProfile(false);
+              closeSubmenus();
               setOpenSidemenu(false);
               router.push('/');
             }}
@@ -91,7 +103,7 @@ const Navbar = () => {
           )}
         </div>
         {/* Left navbar section END */}
-
+ 
         {/* Right navbar section START */}
         <div className={Style.navbar_container_right}>
           {/* Discover section START */}
@@ -104,18 +116,18 @@ const Navbar = () => {
             )}
           </div>
           {/* Discover section END */}
-
+ 
           {/* Help Center section START */}
           <div className={Style.navbar_container_right_help}>
             {isAuth && <p onClick={toggleHelp}>Help</p>}
             {help && (
               <div className={Style.navbar_container_right_help_box}>
-                {isAuth && <HelpCenter />}
+                {isAuth && <HelpCenter closeSubmenus={closeSubmenus} />}
               </div>
             )}
           </div>
           {/* Help Center section END */}
-
+ 
           {/* Notifications section START */}
           {isAuth && (
             <div className={Style.navbar_container_right_notify}>
@@ -126,9 +138,9 @@ const Navbar = () => {
               {notification && <Notification />}
             </div>
           )}
-
+ 
           {/* Notifications section END */}
-
+ 
           {/* Create button section START */}
           {isAuth && (
             <div className={Style.navbar_container_right_button}>
@@ -142,9 +154,9 @@ const Navbar = () => {
               )}
             </div>
           )}
-
+ 
           {/* Create button section END */}
-
+ 
           {/* User profile section START */}
           {isAuth && (
             <div className={Style.navbar_container_right_profile_box}>
@@ -160,13 +172,13 @@ const Navbar = () => {
                   onClick={openProfile}
                   className={Style.navbar_container_right_profile}
                 />
-
+ 
                 {profile && <Profile currentAccount={currentAccount} />}
               </div>
             </div>
           )}
           {/* User profile section END */}
-
+ 
           {/* Sidebar menu button START */}
           <div className={Style.navbar_container_right_menuBtn}>
             <CgMenuRight className={Style.menuIcon} onClick={openSidebar} />
@@ -175,7 +187,7 @@ const Navbar = () => {
         </div>
         {/* Right navbar section END */}
       </div>
-
+ 
       {/* Sidebar START */}
       {openSidemenu && (
         <div className={Style.Sidebar}>
@@ -187,10 +199,10 @@ const Navbar = () => {
         </div>
       )}
       {/* Sidebar END */}
-
+ 
       {openError && <Error />}
     </div>
   );
 };
-
+ 
 export default Navbar;
