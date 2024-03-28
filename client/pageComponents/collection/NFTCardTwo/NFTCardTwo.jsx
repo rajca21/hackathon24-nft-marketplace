@@ -1,39 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { BsImage } from 'react-icons/bs';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { MdVerified, MdTimer } from 'react-icons/md';
+import { AiFillHeart } from 'react-icons/ai';
+import { MdVerified } from 'react-icons/md';
 
 import Style from './NFTCardTwo.module.css';
 import { LikeProfile } from '../../../components/components_index';
 
 const NFTCardTwo = ({ NFTData }) => {
-  const [like, setLike] = useState(false);
-  const [likeCount, setLikeCount] = useState(21);
-
-  const likeNFT = () => {
-    if (!like) {
-      setLike(true);
-      setLikeCount(likeCount + 1);
-    } else {
-      setLike(false);
-      setLikeCount(likeCount - 1);
-    }
-  };
-
   return (
     <div className={Style.NFTCardTwo}>
       {NFTData?.map((el, index) => (
-        <Link href={{ pathname: '/nft-details', query: el }} key={index + 1}>
+        <div key={index + 1}>
           <div className={Style.NFTCardTwo_box}>
             <div className={Style.NFTCardTwo_box_like}>
               <div className={Style.NFTCardTwo_box_like_box}>
                 <div className={Style.NFTCardTwo_box_like_box_box}>
                   <BsImage className={Style.NFTCardTwo_box_like_box_box_icon} />
-                  <p onClick={likeNFT}>
-                    {like ? <AiFillHeart /> : <AiOutlineHeart />}
-                    <span>{likeCount}</span>
+                  <p>
+                    <AiFillHeart />
+                    <span>{el.rating}</span>
                   </p>
                 </div>
               </div>
@@ -41,7 +27,7 @@ const NFTCardTwo = ({ NFTData }) => {
 
             <div className={Style.NFTCardTwo_box_img}>
               <Image
-                src={el.image}
+                src={el.imageCover}
                 alt='NFT'
                 width={500}
                 height={500}
@@ -55,20 +41,19 @@ const NFTCardTwo = ({ NFTData }) => {
                 <LikeProfile />
                 <p>{el.name}</p>
               </div>
-              <small>4{index + 2}</small>
             </div>
 
             <div className={Style.NFTCardTwo_box_price}>
               <div className={Style.NFTCardTwo_box_price_box}>
                 <small>Current Bid</small>
-                <p>{el.price || index + 4} ETH</p>
+                <p>{el.price} ETH</p>
               </div>
               <p className={Style.NFTCardTwo_box_price_stock}>
-                <MdTimer /> <span>{index + 1} hours left</span>
+                <MdVerified /> <span>#{el.tokenID}</span>
               </p>
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );

@@ -6,10 +6,6 @@ import Style from './Discover.module.css';
 const Discover = () => {
   const discover = [
     {
-      name: 'Collection',
-      link: 'collection',
-    },
-    {
       name: 'Search',
       link: 'search',
     },

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { MdVerified, MdCloudUpload, MdTimer } from 'react-icons/md';
 import { FaWallet, FaPercentage } from 'react-icons/fa';
 import {
@@ -98,7 +98,10 @@ const NFTDescription = ({ nft }) => {
           <div className={Style.NFTDescription_box_profile_box}>
             <div className={Style.NFTDescription_box_profile_box_left}>
               <Image
-                src={creatorData?.photo}
+                src={
+                  creatorData?.photo ||
+                  'https://cdn.pixabay.com/photo/2021/02/12/07/03/icon-6007530_640.png'
+                }
                 alt='profile'
                 width={40}
                 height={40}
@@ -135,34 +138,11 @@ const NFTDescription = ({ nft }) => {
 
         <div className={Style.NFTDescription_box_profile_biding}>
           <p>
-            <MdTimer /> <span>Auction ending in:</span>
+            <MdTimer />{' '}
+            <span>
+              Auction ending on: {new Date('2024-05-04').toDateString()} 00:00
+            </span>
           </p>
-          <div className={Style.NFTDescription_box_profile_biding_box_timer}>
-            <div
-              className={Style.NFTDescription_box_profile_biding_box_timer_item}
-            >
-              <p>2</p>
-              <span>Days</span>
-            </div>
-            <div
-              className={Style.NFTDescription_box_profile_biding_box_timer_item}
-            >
-              <p>22</p>
-              <span>hours</span>
-            </div>
-            <div
-              className={Style.NFTDescription_box_profile_biding_box_timer_item}
-            >
-              <p>45</p>
-              <span>mins</span>
-            </div>
-            <div
-              className={Style.NFTDescription_box_profile_biding_box_timer_item}
-            >
-              <p>12</p>
-              <span>secs</span>
-            </div>
-          </div>
 
           <div className={Style.NFTDescription_box_profile_biding_box_price}>
             <div
@@ -194,7 +174,7 @@ const NFTDescription = ({ nft }) => {
                 <Button
                   icon={<FaWallet />}
                   btnName='Place a Bid'
-                  handleClick={() => buyNft(nft)}
+                  handleClick={() => buyNft(router.query)}
                   classStyle={Style.button}
                 />
               </>

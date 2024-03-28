@@ -9,55 +9,49 @@ import {
   CollectionProfile,
   NFTCardTwo,
 } from '../pageComponents/collection/collectionIndex';
-import { Brand, Slider } from '../components/components_index';
+import { Brand, NFTCards, Slider } from '../components/components_index';
 import { Filter } from '../components/components_index';
 
 const collection = () => {
+  const [nfts, setNfts] = useState([]);
+
   const isAuth = Boolean(useSelector((state) => state.token));
   const router = useRouter();
 
+  const collectionData = router.query;
+
   useEffect(() => {
+    const getNFTs = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/v1/nfts?nftCollection=${collectionData?._id}`,
+          {
+            method: 'GET',
+          }
+        );
+        const nftsRes = await res.json();
+        if (nftsRes.data) {
+          setNfts(nftsRes.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     if (!isAuth) {
       router.push('/');
     }
-  }, [isAuth]);
 
-  const collectionArray = [
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-    {
-      image: images.nft_image_3,
-    },
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-    {
-      image: images.nft_image_3,
-    },
-    {
-      image: images.nft_image_1,
-    },
-    {
-      image: images.nft_image_2,
-    },
-  ];
+    getNFTs();
+  }, [isAuth]);
 
   return (
     <div className={Style.collection}>
       {isAuth && (
         <>
           <Banner bannerImage={images.creatorbackground1} />
-          <CollectionProfile />
-          <NFTCardTwo NFTData={collectionArray} />
-          <Filter />
-          <Slider />
+          <CollectionProfile collectionData={collectionData} />
+          <NFTCardTwo NFTData={nfts} />
           <Brand />
         </>
       )}

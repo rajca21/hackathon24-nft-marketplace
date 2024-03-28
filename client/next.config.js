@@ -11,6 +11,7 @@ module.exports = {
       'gateway.pinata.cloud',
       'gray-causal-takin-622.mypinata.cloud',
       'cdn.pixabay.com',
+      'lh3.googleusercontent.com',
     ],
     formats: ['image/webp'],
   },

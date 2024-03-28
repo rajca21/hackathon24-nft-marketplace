@@ -75,13 +75,16 @@
   box-shadow: var(--box-shadow-2);
   padding: 3rem 2rem;
   border-radius: 2rem;
-  line-height: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 }
 
 .collectionProfile_box_middle_box_item p {
-  font-size: 2rem;
-  line-height: 0;
+  font-size: 1.2rem;
+  text-align: center;
 }
 
 .collectionProfile_box_middle_box_item small {
