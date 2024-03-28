@@ -21,7 +21,6 @@ const details = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    console.log(router.query.tokenId);
     setNft(router.query.tokenId);
   }, [router.isReady]);
 

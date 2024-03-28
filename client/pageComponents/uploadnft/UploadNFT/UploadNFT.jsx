@@ -35,7 +35,6 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
       });
       const collectionsRes = await res.json();
       setCollections(collectionsRes.data);
-      console.log(collectionsRes.data);
     };
 
     getCollections();

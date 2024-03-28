@@ -40,7 +40,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Function for testing connection to Smart Contract
   const checkContract = async () => {
     const contract = await connectingWithSmartContract();
-    console.log(contract);
+    // console.log(contract);
   };
 
   // Function for checking wallet connectivity
@@ -86,7 +86,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
         method: 'eth_requestAccounts',
       });
 
-      console.log(accounts);
+      // console.log(accounts);
       setCurrentAccount(accounts[0]);
 
       connectingWithSmartContract();
@@ -150,8 +150,8 @@ export const NFTMarketplaceProvider = ({ children }) => {
           setError('Required data for creating NFT is missing!')
         );
 
-      console.log(creator);
-      console.log(collection);
+      // console.log(creator);
+      // console.log(collection);
 
       const data = JSON.stringify({ name, description, image });
 
@@ -257,7 +257,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
   // Function for creating NFT sale
   const createSale = async (url, formInputPrice, isReselling, id) => {
     try {
-      console.log(url, formInputPrice, isReselling, id);
+      // console.log(url, formInputPrice, isReselling, id);
       const price = ethers.utils.parseUnits(formInputPrice, 'ether');
 
       const contract = await connectingWithSmartContract();
@@ -273,7 +273,7 @@ export const NFTMarketplaceProvider = ({ children }) => {
           });
 
       await transaction.wait();
-      console.log(transaction);
+      // console.log(transaction);
     } catch (error) {
       setError('Something went wrong while creating NFT sale!');
       setOpenError(true);

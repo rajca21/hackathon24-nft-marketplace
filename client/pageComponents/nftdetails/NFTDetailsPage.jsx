@@ -16,7 +16,6 @@ const NFTDetailsPage = ({ nftID }) => {
       );
       const nftsRes = await res.json();
       if (nftsRes.data) {
-        console.log(nftsRes.data[0]);
         setNft(nftsRes.data[0]);
       }
     };

@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 
 import Style from '../styles/search.module.css';
 import images from '../img';
-import { Brand, Filter, Loader, Slider } from '../components/components_index';
 import {
-  Banner,
-  NFTCardTwo,
-} from '../pageComponents/collection/collectionIndex';
+  Brand,
+  Filter,
+  Loader,
+  NFTCards,
+} from '../components/components_index';
+import { Banner } from '../pageComponents/collection/collectionIndex';
 import { SearchBar } from '../pageComponents/search/searchindex';
 import { NFTMarketplaceContext } from '../context/NFTMarketplaceContext';
 
@@ -16,6 +18,8 @@ const search = () => {
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
   const [emptySearch, setEmptySearch] = useState(false);
+  const [ratingFilter, setRatingFilter] = useState(false);
+  const [priceFilter, setPriceFilter] = useState(false);
 
   const { fetchNFTs } = useContext(NFTMarketplaceContext);
   const isAuth = Boolean(useSelector((state) => state.token));
@@ -64,7 +68,10 @@ const search = () => {
             onHandleSearch={onHandleSearch}
             onClearSearch={onClearSearch}
           />
-          <Filter />
+          <Filter
+            setRatingFilter={setRatingFilter}
+            setPriceFilter={setPriceFilter}
+          />
           {emptySearch && (
             <div className={Style.emptySearch_box}>
               <h2 className={Style.emptySearch_box_text}>
@@ -75,9 +82,12 @@ const search = () => {
           {nfts?.length === 0 ? (
             <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
           ) : (
-            <NFTCardTwo NFTData={nfts} />
+            <NFTCards
+              ratingFilter={ratingFilter}
+              priceFilter={priceFilter}
+              NFTData={nfts}
+            />
           )}
-          <Slider />
           <Brand />
         </>
       )}

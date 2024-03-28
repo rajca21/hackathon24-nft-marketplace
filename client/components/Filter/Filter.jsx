@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { MdVerified } from 'react-icons/md';
 import { TiTick } from 'react-icons/ti';
 import {
   FaFilter,
   FaAngleDown,
   FaAngleUp,
-  FaWallet,
-  FaMusic,
-  FaVideo,
-  FaImages,
-  FaUserAlt,
+  FaStar,
+  FaDollarSign,
 } from 'react-icons/fa';
 
 import Style from './Filter.module.css';
 import { Title } from '../components_index';
 
-const Filter = () => {
+const Filter = ({ setRatingFilter, setPriceFilter }) => {
   const [filter, setFilter] = useState(true);
-  const [image, setImage] = useState(true);
-  const [video, setVideo] = useState(true);
-  const [music, setMusic] = useState(true);
+  const [rating, setRating] = useState(true);
+  const [price, setPrice] = useState(true);
 
   const openFilter = () => {
     setFilter(!filter);
   };
-  const openImage = () => {
-    setImage(!image);
+  const openRating = () => {
+    setRating(!rating);
+    if (rating) {
+      setRatingFilter(true);
+    } else {
+      setRatingFilter(false);
+    }
   };
-  const openVideo = () => {
-    setVideo(!video);
-  };
-  const openMusic = () => {
-    setMusic(!music);
+  const openPrice = () => {
+    setPrice(!price);
+    if (price) {
+      setPriceFilter(true);
+    } else {
+      setPriceFilter(false);
+    }
   };
 
   return (
@@ -43,13 +45,7 @@ const Filter = () => {
       />
       <div className={Style.filter}>
         <div className={Style.filter_box}>
-          <div className={Style.filter_box_left}>
-            <button onClick={() => {}}>NFTs</button>
-            <button onClick={() => {}}>Art</button>
-            <button onClick={() => {}}>Music</button>
-            <button onClick={() => {}}>Sports</button>
-            <button onClick={() => {}}>Fashion</button>
-          </div>
+          <div className={Style.filter_box_left}></div>
 
           <div className={Style.filter_box_right}>
             <div className={Style.filter_box_right_box} onClick={openFilter}>
@@ -62,51 +58,24 @@ const Filter = () => {
         {filter && (
           <div className={Style.filter_box_items}>
             <div className={Style.filter_box_items_box}>
-              <div className={Style.filter_box_items_box_item}>
-                <FaWallet />
-                <span>10 ETH</span>
-                <AiFillCloseCircle />
+              <div
+                className={Style.filter_box_items_box_item_trans}
+                onClick={openRating}
+              >
+                <FaStar />
+                <span>{'Rating > 4'}</span>
+                {rating ? <AiFillCloseCircle /> : <TiTick />}
               </div>
             </div>
 
             <div className={Style.filter_box_items_box}>
               <div
                 className={Style.filter_box_items_box_item_trans}
-                onClick={openImage}
+                onClick={openPrice}
               >
-                <FaImages />
-                <span>Images</span>
-                {image ? <AiFillCloseCircle /> : <TiTick />}
-              </div>
-            </div>
-
-            <div className={Style.filter_box_items_box}>
-              <div
-                className={Style.filter_box_items_box_item_trans}
-                onClick={openVideo}
-              >
-                <FaVideo />
-                <span>Videos</span>
-                {video ? <AiFillCloseCircle /> : <TiTick />}
-              </div>
-            </div>
-
-            <div className={Style.filter_box_items_box}>
-              <div
-                className={Style.filter_box_items_box_item_trans}
-                onClick={openMusic}
-              >
-                <FaMusic />
-                <span>Music</span>
-                {music ? <AiFillCloseCircle /> : <TiTick />}
-              </div>
-            </div>
-
-            <div className={Style.filter_box_items_box}>
-              <div className={Style.filter_box_items_box_item}>
-                <FaUserAlt />
-                <span>Verified</span>
-                <MdVerified />
+                <FaDollarSign />
+                <span>{'Rating < 10 ETH'}</span>
+                {price ? <AiFillCloseCircle /> : <TiTick />}
               </div>
             </div>
           </div>

@@ -6,7 +6,6 @@ import {
   BigNFTSlider,
   Brand,
   Collection,
-  FollowerTab,
   Hero,
   Loader,
   NFTCards,
@@ -21,10 +20,8 @@ const Home = () => {
   const [nftsCopy, setNftsCopy] = useState([]);
   const [creators, setCreators] = useState([]);
 
-  const user = useSelector((state) => state.user);
+  // const user = useSelector((state) => state.user);
   const isAuth = Boolean(useSelector((state) => state.token));
-
-  console.log(user);
 
   const { fetchNFTs, checkIfWalletConnected } = useContext(
     NFTMarketplaceContext
@@ -35,7 +32,6 @@ const Home = () => {
       const res = await fetchNFTs();
       setNfts(res?.reverse());
       setNftsCopy(res);
-      console.log(res);
     };
 
     checkIfWalletConnected();
@@ -59,11 +55,6 @@ const Home = () => {
             <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
           ) : (
             <NFTCards NFTData={nfts} />
-          )}
-          {creators.length === 0 ? (
-            <Loader message='Fetching top Creators, this might take a few moments, please wait!' />
-          ) : (
-            <FollowerTab TopCreator={creators} />
           )}
           <Brand />
         </>

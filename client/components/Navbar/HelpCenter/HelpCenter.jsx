@@ -1,9 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import Style from './HelpCenter.module.css';
 
 const HelpCenter = () => {
+  const router = useRouter();
+
   const helpCenter = [
     {
       name: 'About Us',
@@ -19,7 +21,7 @@ const HelpCenter = () => {
     <div>
       {helpCenter.map((el, index) => (
         <div key={index + 1} className={Style.helpCenter}>
-          <Link href={{ pathname: `${el.link}` }}>{el.name}</Link>
+          <div onClick={() => router.push(`/${el.link}`)}>{el.name}</div>
         </div>
       ))}
     </div>

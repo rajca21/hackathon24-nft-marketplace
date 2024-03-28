@@ -1,9 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import Style from './Discover.module.css';
 
 const Discover = () => {
+  const router = useRouter();
+
   const discover = [
     {
       name: 'Search',
@@ -27,7 +29,7 @@ const Discover = () => {
     <div>
       {discover.map((el, index) => (
         <div key={index + 1} className={Style.discover}>
-          <Link href={{ pathname: `${el.link}` }}>{el.name}</Link>
+          <div onClick={() => router.push(`/${el.link}`)}>{el.name}</div>
         </div>
       ))}
     </div>
