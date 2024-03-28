@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -17,6 +18,7 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
   const [openDiscover, setOpenDiscover] = useState(false);
   const [openHelp, setOpenHelp] = useState(false);
 
+  const isAuth = Boolean(useSelector((state) => state.token));
   const router = useRouter();
 
   const discover = [
@@ -96,31 +98,16 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
       </div>
 
       <div className={Style.sideBar_menu}>
-        <div>
-          <div className={Style.sideBar_menu_box} onClick={openDiscoverMenu}>
-            <p>Discover</p>
-            <TiArrowSortedDown />
-          </div>
-
-          {openDiscover && (
-            <div className={Style.sideBar_discover}>
-              {discover.map((el, index) => (
-                <p key={index + 1}>
-                  <Link href={{ pathname: el.link }}>{el.name}</Link>
-                </p>
-              ))}
+        {isAuth && (
+          <div>
+            <div className={Style.sideBar_menu_box} onClick={openDiscoverMenu}>
+              <p>Discover</p>
+              <TiArrowSortedDown />
             </div>
-          )}
-        </div>
 
-        <div>
-          <div className={Style.sideBar_menu_box} onClick={openHelpMenu}>
-            <p>Help Center</p>
-            <TiArrowSortedDown />
-
-            {openHelp && (
+            {openDiscover && (
               <div className={Style.sideBar_discover}>
-                {helpCenter.map((el, index) => (
+                {discover.map((el, index) => (
                   <p key={index + 1}>
                     <Link href={{ pathname: el.link }}>{el.name}</Link>
                   </p>
@@ -128,27 +115,48 @@ const Sidebar = ({ setOpenSidemenu, currentAccount, connectWallet }) => {
               </div>
             )}
           </div>
-        </div>
-      </div>
+        )}
 
-      <div className={Style.sideBar_button}>
-        {currentAccount == '' ? (
-          <Button
-            btnName='Connect Wallet'
-            handleClick={() => connectWallet()}
-          />
-        ) : (
-          <Button
-            btnName='Create'
-            handleClick={() => {
-              setOpenSidemenu(false);
-              setOpenDiscover(false);
-              setOpenHelp(false);
-              router.push('/uploadnft');
-            }}
-          />
+        {isAuth && (
+          <div>
+            <div className={Style.sideBar_menu_box} onClick={openHelpMenu}>
+              <p>Help Center</p>
+              <TiArrowSortedDown />
+
+              {openHelp && (
+                <div className={Style.sideBar_discover}>
+                  {helpCenter.map((el, index) => (
+                    <p key={index + 1}>
+                      <Link href={{ pathname: el.link }}>{el.name}</Link>
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         )}
       </div>
+
+      {isAuth && (
+        <div className={Style.sideBar_button}>
+          {currentAccount == '' ? (
+            <Button
+              btnName='Connect Wallet'
+              handleClick={() => connectWallet()}
+            />
+          ) : (
+            <Button
+              btnName='Create'
+              handleClick={() => {
+                setOpenSidemenu(false);
+                setOpenDiscover(false);
+                setOpenHelp(false);
+                router.push('/uploadnft');
+              }}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

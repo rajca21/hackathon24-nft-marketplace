@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import { Brand, Button, Category } from '../components/components_index';
@@ -17,6 +18,13 @@ const details = () => {
 
   const router = useRouter();
   const { currentAccount } = useContext(NFTMarketplaceContext);
+  const isAuth = Boolean(useSelector((state) => state.token));
+
+  useEffect(() => {
+    if (!isAuth) {
+      router.push('/');
+    }
+  }, [isAuth]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -25,9 +33,13 @@ const details = () => {
 
   return (
     <div>
-      <NFTDetailsPage nft={nft} />
-      <Category />
-      <Brand />
+      {isAuth && (
+        <>
+          <NFTDetailsPage nft={nft} />
+          <Category />
+          <Brand />
+        </>
+      )}
     </div>
   );
 };

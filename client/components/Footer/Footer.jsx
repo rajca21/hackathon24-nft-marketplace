@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import {
   TiSocialFacebook,
@@ -6,8 +7,6 @@ import {
   TiSocialTwitter,
   TiSocialYoutube,
   TiSocialInstagram,
-  TiArrowSortedDown,
-  TiArrowSortedUp,
 } from 'react-icons/ti';
 import { RiSendPlaneFill } from 'react-icons/ri';
 
@@ -16,6 +15,8 @@ import images from '../../img';
 import { Discover, HelpCenter } from '../Navbar/index';
 
 const Footer = () => {
+  const isAuth = Boolean(useSelector((state) => state.token));
+
   return (
     <>
       <div className={Style.footer}>
@@ -52,15 +53,23 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className={Style.footer_box_discover}>
-            <h3>Discover</h3>
-            <Discover />
-          </div>
+          {isAuth ? (
+            <div className={Style.footer_box_discover}>
+              <h3>Discover</h3>
+              <Discover />
+            </div>
+          ) : (
+            <div></div>
+          )}
 
-          <div className={Style.footer_box_help}>
-            <h3>Help Center</h3>
-            <HelpCenter />
-          </div>
+          {isAuth ? (
+            <div className={Style.footer_box_help}>
+              <h3>Help Center</h3>
+              <HelpCenter />
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           <div className={Style.subscribe}>
             <h3>Subscribe</h3>

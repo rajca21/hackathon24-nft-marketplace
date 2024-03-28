@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -13,6 +14,7 @@ const resellToken = () => {
   const [image, setImage] = useState('');
 
   const { createSale } = useContext(NFTMarketplaceContext);
+  const isAuth = Boolean(useSelector((state) => state.token));
   const router = useRouter();
   const { id, tokenURI } = router.query;
 
@@ -34,30 +36,38 @@ const resellToken = () => {
     fetchNFT();
   }, [id]);
 
+  useEffect(() => {
+    if (!isAuth) {
+      router.push('/');
+    }
+  }, [isAuth]);
+
   return (
     <div className={Style.reSellToken}>
-      <div className={Style.reSellToken_box}>
-        <h1>Resell your Token, set your own price:</h1>
-        <div className={formStyle.Form_box_input}>
-          <label htmlFor='name'>Price</label>
-          <input
-            type='number'
-            min={0.0000000001}
-            className={formStyle.Form_box_input_userName}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
+      {isAuth && (
+        <div className={Style.reSellToken_box}>
+          <h1>Resell your Token, set your own price:</h1>
+          <div className={formStyle.Form_box_input}>
+            <label htmlFor='name'>Price</label>
+            <input
+              type='number'
+              min={0.0000000001}
+              className={formStyle.Form_box_input_userName}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
 
-        <div className={Style.reSellToken_box_image}>
-          {image && (
-            <Image src={image} alt='resell nft' width={400} height={400} />
-          )}
-        </div>
+          <div className={Style.reSellToken_box_image}>
+            {image && (
+              <Image src={image} alt='resell nft' width={400} height={400} />
+            )}
+          </div>
 
-        <div className={Style.reSellToken_box_btn}>
-          <Button btnName='Resell NFT' handleClick={resell} />
+          <div className={Style.reSellToken_box_btn}>
+            <Button btnName='Resell NFT' handleClick={resell} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

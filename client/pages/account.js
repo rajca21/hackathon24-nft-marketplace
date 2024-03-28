@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 
@@ -8,6 +10,8 @@ import { Form } from '../pageComponents/account/accountindex';
 
 const account = () => {
   const [fileUrl, setFileUrl] = useState(null);
+  const isAuth = Boolean(useSelector((state) => state.token));
+  const router = useRouter();
 
   const onDrop = useCallback(async (acceptedFile) => {
     setFileUrl(acceptedFile[0]);
@@ -19,29 +23,39 @@ const account = () => {
     maxSize: 5000000,
   });
 
+  useEffect(() => {
+    if (!isAuth) {
+      router.push('/');
+    }
+  }, [isAuth]);
+
   return (
     <div className={Style.account}>
-      <div className={Style.account_info}>
-        <h1>Profile settings</h1>
-        <p>Set your preffered account settings.</p>
-      </div>
+      {isAuth && (
+        <>
+          <div className={Style.account_info}>
+            <h1>Profile settings</h1>
+            <p>Set your preffered account settings.</p>
+          </div>
 
-      <div className={Style.account_box}>
-        <div className={Style.account_box_img} {...getRootProps()}>
-          <input {...getInputProps()} />
-          <Image
-            src={images.user1}
-            alt='account upload'
-            width={150}
-            height={150}
-            className={Style.account_box_img_img}
-          />
-          <p className={Style.account_box_img_para}>Change Image</p>
-        </div>
-        <div className={Style.account_box_form}>
-          <Form />
-        </div>
-      </div>
+          <div className={Style.account_box}>
+            <div className={Style.account_box_img} {...getRootProps()}>
+              <input {...getInputProps()} />
+              <Image
+                src={images.user1}
+                alt='account upload'
+                width={150}
+                height={150}
+                className={Style.account_box_img_img}
+              />
+              <p className={Style.account_box_img_para}>Change Image</p>
+            </div>
+            <div className={Style.account_box_form}>
+              <Form />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

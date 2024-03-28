@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MdNotifications } from 'react-icons/md';
@@ -21,6 +22,7 @@ const Navbar = () => {
   const { currentAccount, connectWallet, openError } = useContext(
     NFTMarketplaceContext
   );
+  const isAuth = Boolean(useSelector((state) => state.token));
   const router = useRouter();
 
   // functions for opening menus (sub-components)
@@ -78,12 +80,14 @@ const Navbar = () => {
             />
             <p className={Style.logo_title}>GlamChain</p>
           </div>
-          <div className={Style.navbar_container_left_box_input}>
-            <div className={Style.navbar_container_left_box_input_box}>
-              <input type='text' />
-              <BsSearch onClick={() => {}} className={Style.search_icon} />
+          {isAuth && (
+            <div className={Style.navbar_container_left_box_input}>
+              <div className={Style.navbar_container_left_box_input_box}>
+                <input type='text' />
+                <BsSearch onClick={() => {}} className={Style.search_icon} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {/* Left navbar section END */}
 
@@ -91,10 +95,10 @@ const Navbar = () => {
         <div className={Style.navbar_container_right}>
           {/* Discover section START */}
           <div className={Style.navbar_container_right_discover}>
-            <p onClick={toggleDiscover}>Discover</p>
+            {isAuth && <p onClick={toggleDiscover}>Discover</p>}
             {discover && (
               <div className={Style.navbar_container_right_discover_box}>
-                <Discover />
+                {isAuth && <Discover />}
               </div>
             )}
           </div>
@@ -102,53 +106,61 @@ const Navbar = () => {
 
           {/* Help Center section START */}
           <div className={Style.navbar_container_right_help}>
-            <p onClick={toggleHelp}>Help</p>
+            {isAuth && <p onClick={toggleHelp}>Help</p>}
             {help && (
               <div className={Style.navbar_container_right_help_box}>
-                <HelpCenter />
+                {isAuth && <HelpCenter />}
               </div>
             )}
           </div>
           {/* Help Center section END */}
 
           {/* Notifications section START */}
-          <div className={Style.navbar_container_right_notify}>
-            <MdNotifications
-              className={Style.notify}
-              onClick={openNotification}
-            />
-            {notification && <Notification />}
-          </div>
+          {isAuth && (
+            <div className={Style.navbar_container_right_notify}>
+              <MdNotifications
+                className={Style.notify}
+                onClick={openNotification}
+              />
+              {notification && <Notification />}
+            </div>
+          )}
+
           {/* Notifications section END */}
 
           {/* Create button section START */}
-          <div className={Style.navbar_container_right_button}>
-            {currentAccount == '' ? (
-              <Button btnName='Connect' handleClick={() => connectWallet()} />
-            ) : (
-              <Button
-                btnName='Create'
-                handleClick={() => router.push('/uploadnft')}
-              />
-            )}
-          </div>
+          {isAuth && (
+            <div className={Style.navbar_container_right_button}>
+              {currentAccount == '' ? (
+                <Button btnName='Connect' handleClick={() => connectWallet()} />
+              ) : (
+                <Button
+                  btnName='Create'
+                  handleClick={() => router.push('/uploadnft')}
+                />
+              )}
+            </div>
+          )}
+
           {/* Create button section END */}
 
           {/* User profile section START */}
-          <div className={Style.navbar_container_right_profile_box}>
-            <div className={Style.navbar_container_right_profile}>
-              <Image
-                src={images.user1}
-                alt='Proifle'
-                width={40}
-                height={40}
-                onClick={openProfile}
-                className={Style.navbar_container_right_profile}
-              />
+          {isAuth && (
+            <div className={Style.navbar_container_right_profile_box}>
+              <div className={Style.navbar_container_right_profile}>
+                <Image
+                  src={images.user1}
+                  alt='Proifle'
+                  width={40}
+                  height={40}
+                  onClick={openProfile}
+                  className={Style.navbar_container_right_profile}
+                />
 
-              {profile && <Profile currentAccount={currentAccount} />}
+                {profile && <Profile currentAccount={currentAccount} />}
+              </div>
             </div>
-          </div>
+          )}
           {/* User profile section END */}
 
           {/* Sidebar menu button START */}

@@ -24,7 +24,9 @@ const Home = () => {
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
   const [creators, setCreators] = useState([]);
+
   const user = useSelector((state) => state.user);
+  const isAuth = Boolean(useSelector((state) => state.token));
 
   console.log(user);
 
@@ -48,26 +50,31 @@ const Home = () => {
 
   return (
     <div className={Style.homePage}>
-      <LoginSignUp />
-      <Hero />
-      <Service />
-      <BigNFTSlider />
-      <Slider />
-      <Collection />
-      <Filter />
-      {nfts?.length === 0 ? (
-        <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
+      {!isAuth ? (
+        <LoginSignUp />
       ) : (
-        <NFTCards NFTData={nfts} />
+        <>
+          <Hero />
+          <Service />
+          <BigNFTSlider />
+          <Slider />
+          <Collection />
+          <Filter />
+          {nfts?.length === 0 ? (
+            <Loader message='Fetching NFTs, this might take a few moments, please wait!' />
+          ) : (
+            <NFTCards NFTData={nfts} />
+          )}
+          <Category />
+          {creators.length === 0 ? (
+            <Loader message='Fetching top Creators, this might take a few moments, please wait!' />
+          ) : (
+            <FollowerTab TopCreator={creators} />
+          )}
+          <Subscribe />
+          <Brand />
+        </>
       )}
-      <Category />
-      {creators.length === 0 ? (
-        <Loader message='Fetching top Creators, this might take a few moments, please wait!' />
-      ) : (
-        <FollowerTab TopCreator={creators} />
-      )}
-      <Subscribe />
-      <Brand />
     </div>
   );
 };

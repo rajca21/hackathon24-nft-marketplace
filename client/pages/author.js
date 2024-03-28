@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 import Style from '../styles/author.module.css';
 import images from '../img';
@@ -24,6 +26,8 @@ const author = () => {
   const { fetchMyNFTsOrListedNFTs, currentAccount } = useContext(
     NFTMarketplaceContext
   );
+  const isAuth = Boolean(useSelector((state) => state.token));
+  const router = useRouter();
 
   const followerArray = [
     {
@@ -70,37 +74,47 @@ const author = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!isAuth) {
+      router.push('/');
+    }
+  }, [isAuth]);
+
   return (
     <div className={Style.author}>
-      <Banner bannerImage={images.creatorbackground2} />
-      <AuthorProfileCard currentAccount={currentAccount} />
-      <AuthorTabs
-        setCollectables={setCollectables}
-        setCreated={setCreated}
-        setLike={setLike}
-        setFollower={setFollower}
-        setFollowing={setFollowing}
-        currentAccount={currentAccount}
-      />
-      <AuthorNFTCardBox
-        collectables={collectables}
-        created={created}
-        like={like}
-        follower={follower}
-        following={following}
-        nfts={nfts}
-        myNFTS={myNFTs}
-      />
-      <Title
-        heading='Popular Creators'
-        paragraph='Explore some of the most unique NFT artists'
-      />
-      <div className={Style.author_box}>
-        {followerArray.map((el, i) => (
-          <FollowerTabCard i={i} el={el} />
-        ))}
-      </div>
-      <Brand />
+      {isAuth && (
+        <>
+          <Banner bannerImage={images.creatorbackground2} />
+          <AuthorProfileCard currentAccount={currentAccount} />
+          <AuthorTabs
+            setCollectables={setCollectables}
+            setCreated={setCreated}
+            setLike={setLike}
+            setFollower={setFollower}
+            setFollowing={setFollowing}
+            currentAccount={currentAccount}
+          />
+          <AuthorNFTCardBox
+            collectables={collectables}
+            created={created}
+            like={like}
+            follower={follower}
+            following={following}
+            nfts={nfts}
+            myNFTS={myNFTs}
+          />
+          <Title
+            heading='Popular Creators'
+            paragraph='Explore some of the most unique NFT artists'
+          />
+          <div className={Style.author_box}>
+            {followerArray.map((el, i) => (
+              <FollowerTabCard i={i} el={el} />
+            ))}
+          </div>
+          <Brand />
+        </>
+      )}
     </div>
   );
 };

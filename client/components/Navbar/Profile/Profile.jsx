@@ -1,14 +1,19 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserAlt, FaRegImage, FaUserEdit } from 'react-icons/fa';
 import { MdHelpCenter } from 'react-icons/md';
-import { TbDownloadOff, TbDownload } from 'react-icons/tb';
+import { TbDownload } from 'react-icons/tb';
 
 import Style from './Profile.module.css';
 import images from '../../../img';
+import { setLogout } from '../../../state';
 
 const Profile = ({ currentAccount }) => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   return (
     <div className={Style.profile}>
       <div className={Style.profile_account}>
@@ -21,7 +26,9 @@ const Profile = ({ currentAccount }) => {
         />
 
         <div className={Style.profile_account_info}>
-          <p>User name</p>
+          <p>{user.name}</p>
+          <small>{user.email}</small>
+          <br></br>
           <small>{currentAccount.slice(0, 15)}...</small>
         </div>
       </div>
@@ -57,8 +64,12 @@ const Profile = ({ currentAccount }) => {
           </div>
           <div className={Style.profile_menu_one_item}>
             <TbDownload />
-            <p>
-              <Link href={{ pathname: '/disconnect' }}>Disconnect</Link>
+            <p
+              onClick={() => {
+                dispatch(setLogout());
+              }}
+            >
+              <Link href={{ pathname: '/' }}>Disconnect</Link>
             </p>
           </div>
         </div>
