@@ -4,6 +4,7 @@
 
 .upload_box_slider_div {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -12,6 +13,7 @@
   border-radius: 1rem;
   padding: 1rem;
   cursor: pointer;
+  width: 15%;
 }
 
 .upload_box_slider_box {

@@ -10,15 +10,6 @@ const nftSchema = new mongoose.Schema(
       min: [40, 'An NFTs name must have less than 40 characters.'],
       max: [5, 'An NFTs name must have at least 5 characters.'],
     },
-    slug: String,
-    duration: {
-      type: Number,
-      required: [true, 'An NFT must have a duration.'],
-    },
-    maxGroupSize: {
-      type: Number,
-      required: [true, 'An NFT must have a group size.'],
-    },
     rating: {
       type: Number,
       default: 4.5,
@@ -48,9 +39,21 @@ const nftSchema = new mongoose.Schema(
     },
     images: [String],
     startDates: [Date],
-    secretNft: {
-      type: Boolean,
-      default: false,
+    creator: {
+      type: String,
+      default: null,
+    },
+    owner: {
+      type: String,
+      default: null,
+    },
+    seller: {
+      type: String,
+      default: null,
+    },
+    nftCollection: {
+      type: String,
+      default: null,
     },
   },
   {

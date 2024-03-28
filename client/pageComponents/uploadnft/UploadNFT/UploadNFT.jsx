@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { MdOutlineHttp, MdOutlineAttachFile } from 'react-icons/md';
@@ -23,6 +23,7 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
   const [properties, setProperties] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [collections, setCollections] = useState([]);
 
   const router = useRouter();
 
@@ -40,6 +41,19 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
       category: 'Music',
     },
   ];
+
+  useEffect(() => {
+    const getCollections = async () => {
+      const res = await fetch('http://localhost:8000/api/v1/collections', {
+        method: 'GET',
+      });
+      const collectionsRes = await res.json();
+      setCollections(collectionsRes.data);
+      console.log(collectionsRes.data);
+    };
+
+    getCollections();
+  }, []);
 
   return (
     <div className={Style.upload}>
@@ -106,18 +120,18 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
           </p>
 
           <div className={Style.upload_box_slider_div}>
-            {categoryArray.map((el, i) => (
+            {collections.map((el, i) => (
               <div
                 className={`${Style.upload_box_slider} ${
                   active == i + 1 ? Style.active : ''
                 }`}
                 key={i + 1}
-                onClick={() => (setActive(i + 1), setCategory(el.category))}
+                onClick={() => (setActive(i + 1), setCategory(el))}
               >
                 <div className={Style.upload_box_slider_box}>
                   <div className={Style.upload_box_slider_box_img}>
                     <Image
-                      src={el.image}
+                      src={el.imageCover}
                       alt='background'
                       width={70}
                       height={70}
@@ -128,7 +142,7 @@ const UploadNFT = ({ uploadToPinata, createNFT }) => {
                     <TiTick />
                   </div>
                 </div>
-                <p>{el.category} </p>
+                <p>{el.name}</p>
               </div>
             ))}
           </div>
